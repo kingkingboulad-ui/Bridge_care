@@ -6,6 +6,8 @@ import {
   logout, 
   googleLogin,
   adminLogin,
+  resetPassword,
+  forgotPassword,
 } from "../controllers/authController.js";
 
 import { protect } from "../middleware/authMiddleware.js";
@@ -53,6 +55,8 @@ router.get("/me", protect, async (req, res) => {
 /**
  * Logout
  */
+router.post('/forgot-password', forgotPassword);
+router.post('/reset-password', resetPassword);
 router.post("/logout", logout);
 router.post("/google", googleLogin);
 export default router;

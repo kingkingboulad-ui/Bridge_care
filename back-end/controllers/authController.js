@@ -2,9 +2,27 @@ import pool from "../config/DBConnect.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { OAuth2Client } from "google-auth-library";
-
+import nodemailer from 'nodemailer';
 import dotenv from "dotenv";
+import crypto from 'crypto';
 dotenv.config();
+
+
+
+
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS,
+  },
+});
+
+
+
+
+
+
 
 /**
  * =========================
@@ -709,5 +727,128 @@ export const adminLogin = async (req, res) => {
       success: false,
       message: "Server error during admin authentication",
     });
+  }
+};
+
+
+
+
+
+
+
+
+
+
+
+export const forgotPassword = async (req, res) => {
+  try {
+    const { email } = req.body;
+
+    if (!email) {
+      return res.status(400).json({ success: false, message: 'Email is required.' });
+    }
+
+    // التحقق من وجود المستخدم
+    const [users] = await pool.execute('SELECT * FROM users WHERE email = ?', [email.trim().toLowerCase()]);
+    if (users.length === 0) {
+      // لأسباب أمنية، نرجع نجاح حتى لو لم يكن الإيميل موجوداً لمنع تخمين الإيميلات
+      return res.status(200).json({
+        success: true,
+        message: 'If that email is registered, you will receive a reset link shortly.',
+      });
+    }
+
+    const user = users[0];
+
+    // توليد Token عشوائي وتحديد وقت صلاحية (15 دقيقة)
+    const resetToken = crypto.randomBytes(32).toString('hex');
+    const tokenHash = crypto.createHash('sha256').update(resetToken).digest('hex');
+    const expiry = Date.now() + 15 * 60 * 1000; // 15 دقيقة من الآن
+
+    // تخزين الهاش ووقت الانتهاء
+    await pool.execute(
+      'UPDATE users SET reset_token = ?, reset_token_expiry = ? WHERE id = ?',
+      [tokenHash, expiry, user.id]
+    );
+
+    // رابط إعادة التعيين الذي سيُرسل للمستخدم
+    const clientUrl = process.env.CLIENT_URL || 'http://localhost:3000';
+    const resetUrl = `${clientUrl}/reset-password?token=${resetToken}&email=${encodeURIComponent(user.email)}`;
+
+    // إرسال الإيميل
+    await transporter.sendMail({
+      from: `"NurseConnect Security" <${process.env.EMAIL_USER}>`,
+      to: user.email,
+      subject: 'Password Reset Request',
+      html: `
+        <div style="font-family: Arial, sans-serif; max-width: 500px; margin: 0 auto; padding: 24px; border: 1px solid #e2e8f0; border-radius: 12px;">
+          <h2 style="color: #00535B;">NurseConnect</h2>
+          <p>Hello,</p>
+          <p>We received a request to reset your password. Click the button below to choose a new password:</p>
+          <div style="text-align: center; margin: 25px 0;">
+            <a href="${resetUrl}" style="background-color: #00535B; color: white; padding: 12px 24px; text-decoration: none; border-radius: 8px; font-weight: bold; display: inline-block;">Reset Password</a>
+          </div>
+          <p style="color: #64748b; font-size: 13px;">This link will expire in 15 minutes. If you did not request this, you can safely ignore this email.</p>
+        </div>
+      `,
+    });
+
+    return res.status(200).json({
+      success: true,
+      message: 'If that email is registered, you will receive a reset link shortly.',
+    });
+  } catch (error) {
+    console.error('Forgot password error:', error);
+    return res.status(500).json({ success: false, message: 'Server error. Please try again.' });
+  }
+};
+
+// 2. إعادة تعيين كلمة المرور
+export const resetPassword = async (req, res) => {
+  try {
+    const { email, token, newPassword } = req.body;
+
+    if (!email || !token || !newPassword) {
+      return res.status(400).json({ success: false, message: 'All fields are required.' });
+    }
+
+    if (newPassword.length < 6) {
+      return res.status(400).json({ success: false, message: 'Password must be at least 6 characters.' });
+    }
+
+    const tokenHash = crypto.createHash('sha256').update(token).digest('hex');
+
+    // البحث عن المستخدم والتحقق من التوكن ووقت الصلاحية
+    const [users] = await pool.execute(
+      'SELECT * FROM users WHERE email = ? AND reset_token = ? AND reset_token_expiry > ?',
+      [email.trim().toLowerCase(), tokenHash, Date.now()]
+    );
+
+    if (users.length === 0) {
+      return res.status(400).json({
+        success: false,
+        message: 'Invalid or expired password reset link.',
+      });
+    }
+
+    const user = users[0];
+
+    // تشفير كلمة المرور الجديدة
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(newPassword, salt);
+
+    // تحديث كلمة المرور ومسح التوكن
+    await pool.execute(
+      'UPDATE users SET password = ?, reset_token = NULL, reset_token_expiry = NULL WHERE id = ?',
+      [hashedPassword, user.id]
+    );
+
+    return res.status(200).json({
+      success: true,
+      message: 'Password has been reset successfully. You can now login.',
+    });
+  } catch (error) {
+    console.error('Reset password error:', error);
+    return res.status(500).json({ success: false, message: 'Server error. Please try again.' });
   }
 };

@@ -59,7 +59,7 @@ export default function AboutPage() {
 
   return (
     <>
-      <Navbar />
+  
 
       <main>
         {/* HERO */}
@@ -244,7 +244,7 @@ export default function AboutPage() {
         </section>
       </main>
 
-      <Footer />
+   
     </>
   );
 }

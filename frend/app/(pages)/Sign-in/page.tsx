@@ -5,6 +5,7 @@ import React, { useState } from "react";
 import { GoogleLogin } from "@react-oauth/google";
 import Image from "next/image";
 import { useLanguage } from "@/context/LanguageContext";
+import Link from "next/link";
 
 type LoginType = "patient" | "nurse";
 
@@ -241,12 +242,12 @@ export default function SignInPage() {
                       {t("password")}
                     </label>
 
-                    <a
-                      href="#"
+                    <Link
+                      href="/forgot-password"
                       className="text-[11px] font-medium text-[#0d7c7b] hover:underline"
                     >
                       {t("forgotPassword")}
-                    </a>
+                    </Link>
 
                   </div>
 
