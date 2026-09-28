@@ -41,6 +41,7 @@ export default function DashboardShell({ children }: ShellProps) {
     { name: 'Overview', href: '/admin', icon: Home },
     { name: 'Nurses', href: '/admin/nurses', icon: UserCheck },
     { name: 'Patients', href: '/admin/patients', icon: Users },
+    { name: 'Show Contact', href: '/admin/show-contact', icon: Users },
     { name: 'Appointments', href: '/admin/appointments', icon: Calendar },
   ];
 

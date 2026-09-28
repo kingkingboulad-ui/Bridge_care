@@ -15,7 +15,8 @@ import adminRoutes from "./router/adminRoutes.js";
 import nurseSearchRoutes from "./router/nurseSearchRoutes.js";
 
 // NEW: Contact
-import contactRoutes from "./router/contactRoutes.js";
+import contactRoutes from './router/contactRoutes.js';
+
 
 dotenv.config();
 
@@ -48,7 +49,7 @@ app.use("/api/ai", aiCareRoutes);
 app.use("/api/admin", adminRoutes);
 
 // NEW: Contact Us
-app.use("/api/contact", contactRoutes);
+app.use('/api/contact', contactRoutes);
 
 // Start server
 app.listen(PORT, () => {

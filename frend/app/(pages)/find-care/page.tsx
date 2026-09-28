@@ -6,6 +6,7 @@ import axios from 'axios';
 import { Search, MapPin, Star, Award, Loader2, Filter } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
+import {getImageUrl} from "@/lib/getImageUrl"
 
 interface Nurse {
   id: number;
@@ -19,6 +20,7 @@ interface Nurse {
   image?: string;
   cv_file?: string;
   categories?: string;
+  
 }
 
 const CATEGORIES_LIST = [
@@ -128,18 +130,14 @@ function FindCareContent() {
                 className="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm space-y-4 hover:shadow-md transition-shadow"
               >
                 <div className="flex items-center gap-3">
-                  <Image
-                  width={56} 
-                  height={56}
-                    src={
-                      nurse.image ||
-                      `https://ui-avatars.com/api/?name=${encodeURIComponent(
-                        nurse.full_name
-                      )}&background=00535B&color=fff`
-                    }
-                    alt={nurse.full_name}
-                    className="w-14 h-14 rounded-2xl object-cover border border-slate-100"
-                  />
+                <Image
+  width={56}
+  height={56}
+  src={getImageUrl(nurse.image, nurse.full_name)}
+  alt={nurse.full_name}
+  className="w-14 h-14 rounded-2xl object-cover border border-slate-100"
+  loading="lazy"
+/>
                   <div>
                     <h3 className="font-bold text-slate-900 text-base">{nurse.full_name}</h3>
                     <p className="text-xs text-[#00535B] font-semibold">{nurse.specialization}</p>

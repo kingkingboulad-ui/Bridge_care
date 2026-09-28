@@ -22,54 +22,59 @@ export default function ContactPage() {
   const [submitted, setSubmitted] = useState(false);
   const [sending, setSending] = useState(false);
 
-  const handleSubmit = async (
-    e: React.FormEvent<HTMLFormElement>
-  ) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
     setSending(true);
 
     try {
       const form = e.currentTarget;
-
       const formData = new FormData(form);
 
       const data = {
-        name: formData.get("name"),
-        email: formData.get("email"),
-        subject: formData.get("subject"),
-        message: formData.get("message"),
+        name: String(formData.get("name") || "").trim(),
+        email: String(formData.get("email") || "").trim(),
+        subject: String(formData.get("subject") || "general"),
+        message: String(formData.get("message") || "").trim(),
       };
 
-      const response = await fetch(
-        "http://localhost:4000/api/contact",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          credentials: "include",
-          body: JSON.stringify(data),
-        }
-      );
+      // التحقق البسيط من الحقول قبل إرسال الطلب
+      if (!data.name || !data.email || !data.message) {
+        alert(
+          dir === "rtl"
+            ? "يرجى ملء جميع الحقول المطلوبة."
+            : "Please fill in all required fields."
+        );
+        setSending(false);
+        return;
+      }
+
+      // استخدم منفذ السيرفر لديك (5000 أو 4000) عبر المتغير البيئي
+      const API_URL = process.env.NEXT_PUBLIC_API_URL ;
+
+      const response = await fetch(`${API_URL}/api/contact`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify(data),
+      });
 
       const result = await response.json();
 
-      if (!response.ok) {
-        throw new Error(
-          result.message || "Failed to send message."
-        );
+      if (!response.ok || !result.success) {
+        throw new Error(result.message || "Failed to send message.");
       }
 
       form.reset();
       setSubmitted(true);
-    } catch (error) {
+    } catch (error: any) {
       console.error("Contact form error:", error);
-
       alert(
-        dir === "rtl"
-          ? "حدث خطأ أثناء إرسال الرسالة. يرجى المحاولة مرة أخرى."
-          : "Something went wrong while sending your message. Please try again."
+        error.message ||
+          (dir === "rtl"
+            ? "حدث خطأ أثناء إرسال الرسالة. يرجى المحاولة مرة أخرى."
+            : "Something went wrong while sending your message. Please try again.")
       );
     } finally {
       setSending(false);
