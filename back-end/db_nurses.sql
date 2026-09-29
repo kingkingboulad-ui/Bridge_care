@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 28, 2026 at 06:01 PM
+-- Generation Time: Sep 29, 2026 at 11:54 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -73,6 +73,13 @@ CREATE TABLE `contact_messages` (
   `reply_message` text DEFAULT NULL,
   `replied_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `contact_messages`
+--
+
+INSERT INTO `contact_messages` (`id`, `name`, `email`, `subject`, `message`, `status`, `created_at`, `reply_message`, `replied_at`) VALUES
+(2, 'akil  boulad', 'akil@gmail.com', 'general', 'hi', 'unread', '2026-09-28 16:45:07', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -247,56 +254,58 @@ CREATE TABLE `users` (
   `phone` varchar(30) DEFAULT NULL,
   `role` varchar(20) NOT NULL DEFAULT 'user',
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `reset_token` varchar(255) DEFAULT NULL,
+  `reset_token_expiry` bigint(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `first_name`, `last_name`, `email`, `password`, `phone`, `role`, `created_at`, `updated_at`) VALUES
-(1, 'Abed', 'Boulad', 'abed@test.com', '$2b$10$ui6xPicz4Q081C797xDx9uGDdzRj6qk1T/IitXYpsnDITq5eca0o2', '70123456', 'user', '2026-09-09 10:32:22', '2026-09-09 10:32:22'),
-(2, 'abed', 'boulad', 'abed@gmail.com', '$2b$10$77qfzMsOiQlxABoQThas0O2FeBTLBTWQZmQXVJO750pDDBTs5KM1.', '76986611', 'admin', '2026-09-12 15:35:43', '2026-09-28 16:00:49'),
-(3, 'ossman', 'boulad', 'ossmanboulad@gmail.com', '$2b$10$gwr7Dx2ArELlCT/q0F5HqOfae2ofmiDD9GqbC4HLGOYbFBHo5SbM6', '76986611', 'user', '2026-09-12 15:38:20', '2026-09-12 15:38:20'),
-(4, 'akil', 'boulad', 'akil@gmail.com', '$2b$10$3bAJu4yDGYqFg4wY.VEklu2tlYHGcV1f45eZpvrDlgAyj2DXCked6', '-123456789', 'user', '2026-09-12 15:39:09', '2026-09-12 15:39:09'),
-(5, 'Sarah', 'Haddad', 'sarah.haddad@example.com', '$2b$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', NULL, 'nurse', '2026-09-16 12:29:43', '2026-09-16 12:29:43'),
-(6, 'David', 'Thompson', 'david.thompson@example.com', '$2b$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', NULL, 'nurse', '2026-09-16 12:29:43', '2026-09-16 12:29:43'),
-(7, 'Lisa', 'Park', 'lisa.park@example.com', '$2b$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', NULL, 'nurse', '2026-09-16 12:29:43', '2026-09-16 12:29:43'),
-(8, 'Maria', 'Santos', 'maria.santos@example.com', '$2b$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', NULL, 'nurse', '2026-09-16 12:29:43', '2026-09-16 12:29:43'),
-(9, 'Aisha', 'Patel', 'aisha.patel@example.com', '$2b$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', NULL, 'nurse', '2026-09-16 12:29:43', '2026-09-16 12:29:43'),
-(10, 'Sami', 'Okonkwo', 'sami.okonkwo@example.com', '$2b$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', NULL, 'nurse', '2026-09-16 12:29:43', '2026-09-16 12:29:43'),
-(11, 'Emily', 'Johnson', 'emily.johnson@example.com', '$2b$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', NULL, 'nurse', '2026-09-16 12:29:43', '2026-09-16 12:29:43'),
-(12, 'Michael', 'Brown', 'michael.brown@example.com', '$2b$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldLJZdL17lhWy', NULL, 'nurse', '2026-09-16 12:29:43', '2026-09-16 12:29:43'),
-(13, 'Sophia', 'Wilson', 'sophia.wilson@example.com', '$2b$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', NULL, 'nurse', '2026-09-16 12:29:43', '2026-09-16 12:29:43'),
-(14, 'Daniel', 'Miller', 'daniel.miller@example.com', '$2b$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', NULL, 'nurse', '2026-09-16 12:29:43', '2026-09-16 12:29:43'),
-(15, 'Olivia', 'Martinez', 'olivia.martinez@example.com', '$2b$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', NULL, 'nurse', '2026-09-16 12:29:43', '2026-09-16 12:29:43'),
-(16, 'James', 'Anderson', 'james.anderson@example.com', '$2b$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', NULL, 'nurse', '2026-09-16 12:29:43', '2026-09-16 12:29:43'),
-(17, 'Nora', 'Williams', 'nora.williams@example.com', '$2b$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', NULL, 'nurse', '2026-09-16 12:29:43', '2026-09-16 12:29:43'),
-(18, 'Daniel', 'Carter', 'daniel.carter@example.com', '$2b$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', NULL, 'nurse', '2026-09-16 12:29:43', '2026-09-16 12:29:43'),
-(19, 'Emma', 'Davis', 'emma.davis@example.com', '$2b$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', NULL, 'nurse', '2026-09-16 12:29:43', '2026-09-16 12:29:43'),
-(20, 'Maya', 'Robinson', 'maya.robinson@example.com', '$2b$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', NULL, 'nurse', '2026-09-16 12:29:43', '2026-09-16 12:29:43'),
-(21, 'Noah', 'Williams', 'noah.williams@example.com', '$2b$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', NULL, 'nurse', '2026-09-16 12:29:43', '2026-09-16 12:29:43'),
-(22, 'Grace', 'Lee', 'grace.lee@example.com', '$2b$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', NULL, 'nurse', '2026-09-16 12:29:43', '2026-09-16 12:29:43'),
-(23, 'Ethan', 'Moore', 'ethan.moore@example.com', '$2b$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', NULL, 'nurse', '2026-09-16 12:29:43', '2026-09-16 12:29:43'),
-(24, 'Chloe', 'Taylor', 'chloe.taylor@example.com', '$2b$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', NULL, 'nurse', '2026-09-16 12:29:43', '2026-09-16 12:29:43'),
-(25, 'Ayman', 'Harris', 'ayman.harris@example.com', '$2b$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', NULL, 'nurse', '2026-09-16 12:29:43', '2026-09-16 12:29:43'),
-(26, 'jane', 'doe', 'janDoe@gmail.com', '$2b$10$Xp6Yu7Qu.o03Wgv7cR9T3OFyQ.60R5Upp6tGDfJoy.xXfteAm3CQi', '81230455', 'patient', '2026-09-17 07:46:07', '2026-09-17 07:46:07'),
-(27, 'sara', 'sara', 'sara@gmail.com', '$2b$10$UerfGGR60rJC2L32yGbVlupchC6EXTgNWdzTcWzP4PfnK7VXbf.R2', '81233333', 'patient', '2026-09-17 07:47:57', '2026-09-17 07:47:57'),
-(28, 'Razan', 'Hassoun', 'rznhassoun@gmail.com', '$2b$10$wt9ppHxFI2boAoO/YLA5g..3jE6PFbVLi7AMG1Z91mDIMSIVk1HCi', '70852961', 'nurse', '2026-09-17 08:02:21', '2026-09-17 08:02:21'),
-(29, 'Roro', 'hass', 'razan@gmail.com', '$2b$10$dT0u/lrOi6LsOyis7sU4EOqBxjZOXBh3kEGuyy6cuZkTxliVvmGUC', '70852961', 'nurse', '2026-09-17 08:04:10', '2026-09-17 08:04:10'),
-(30, 'sasa', 'sasa', 'sasa@email.com', '$2b$10$YO4ARgLNmV08YY3s3WIxJOjPQFYf9dcahU09.zgn26nMg3r9CfKJW', '3030303', 'nurse', '2026-09-17 09:10:40', '2026-09-17 09:10:40'),
-(32, 'jana', 'boulad', 'jana@gmai.com', '$2b$10$fGsh3o6CK5AQy07k58zNCOIEUKt2KjhvxNI1vto2cRLTfOWgCqaRO', '76986611', 'nurse', '2026-09-19 12:12:55', '2026-09-19 12:12:55'),
-(33, 'abedlrazak', 'boulad', 'bouladabedlrazak@gmail.com', 'google_authenticated_oauth', NULL, 'patient', '2026-09-19 16:43:02', '2026-09-19 16:43:02'),
-(34, 'habib', 'sarrag', 'habib@gmail.com', '$2b$10$1KVZAfDyTHMG/77txpoo1evBCuoVipMfuDWX2D2XLmCF2/cTIzsya', '76986611', 'patient', '2026-09-19 16:57:44', '2026-09-19 16:57:44'),
-(35, 'amjad', 'boulad', 'amjad@gmail.com', '$2b$10$lCACcoX78sfwUNb5EjKkOe3NJugkw6G4gFnHdaXIOyu7IXC1gzBrW', '76986611', 'nurse', '2026-09-19 17:03:31', '2026-09-19 17:03:31'),
-(36, 'King ', 'Kingboulad', 'kingkingboulad@gmail.com', 'google_authenticated_oauth', NULL, 'patient', '2026-09-19 17:29:56', '2026-09-19 17:29:56'),
-(37, 'dora', 'sarrg', 'dora@gmail.com', '$2b$10$4YOxQrtprIVwX2TokOsI0OoMsOqyrcPmvdywifWD2LpF9to.Wv44W', '76986611', 'patient', '2026-09-19 17:32:49', '2026-09-19 17:32:49'),
-(38, 'boudi', 'boulad', 'boudi@gmail.com', '$2b$10$niy6DwQsc08aDx4dga7eteScEk4bvP.yzudmOFAviON5cyZtMsRCy', '76986611', 'nurse', '2026-09-20 10:48:15', '2026-09-20 10:48:15'),
-(42, 'jihan', 'eid', 'jihan@gmail.com', '$2b$10$40/2rrObwnQrq8dx/E.UX.mKoER.y7Ag.JqJ1E.QTAn0Od3EoF1UO', '76986611', 'nurse', '2026-09-22 10:55:35', '2026-09-22 11:05:22'),
-(43, 'noura', 'boulad', 'noura@gmail.com', '$2b$10$TRAOveKGyeaZHmz.HmYuEeQrlww5Je1Q0IVJl28LxWBN0Niv65clm', '7698611', 'nurse', '2026-09-25 07:51:55', '2026-09-25 07:59:02'),
-(44, 'razan', 'haasoun', 'roro@gmail.com', '$2b$10$fGu/1lYmgEmkjoh/Cla.WeqGiH9aoxftp16XCgnYcEJhIWZ9VeawG', NULL, 'admin', '2026-09-25 08:32:59', '2026-09-25 08:35:40'),
-(45, 'houda', 'sarag', 'houda@gmail.com', '$2b$10$wy2YN0Z1XlWaZ3jaSnB5g.Zbu7Kvk36dAND3zli5y4iragW7Pl5oy', '123456789', 'patient', '2026-09-25 08:43:24', '2026-09-25 08:43:24'),
-(46, 'abdo', 'abdo', 'abdo@gmail.com', '$2b$10$pT6SxtRWXn2IGi5Sf3zEqOZTNkB0Iz9qAk8EsJ1BAmDXXao2Sz342', '76986611', 'nurse', '2026-09-25 16:49:44', '2026-09-25 16:49:44');
+INSERT INTO `users` (`id`, `first_name`, `last_name`, `email`, `password`, `phone`, `role`, `created_at`, `updated_at`, `reset_token`, `reset_token_expiry`) VALUES
+(1, 'Abed', 'Boulad', 'abed@test.com', '$2b$10$ui6xPicz4Q081C797xDx9uGDdzRj6qk1T/IitXYpsnDITq5eca0o2', '70123456', 'user', '2026-09-09 10:32:22', '2026-09-09 10:32:22', NULL, NULL),
+(2, 'abed', 'boulad', 'abed@gmail.com', '$2b$10$77qfzMsOiQlxABoQThas0O2FeBTLBTWQZmQXVJO750pDDBTs5KM1.', '76986611', 'admin', '2026-09-12 15:35:43', '2026-09-28 16:00:49', NULL, NULL),
+(3, 'ossman', 'boulad', 'ossmanboulad@gmail.com', '$2b$10$gwr7Dx2ArELlCT/q0F5HqOfae2ofmiDD9GqbC4HLGOYbFBHo5SbM6', '76986611', 'user', '2026-09-12 15:38:20', '2026-09-12 15:38:20', NULL, NULL),
+(4, 'akil', 'boulad', 'akil@gmail.com', '$2b$10$3bAJu4yDGYqFg4wY.VEklu2tlYHGcV1f45eZpvrDlgAyj2DXCked6', '-123456789', 'user', '2026-09-12 15:39:09', '2026-09-12 15:39:09', NULL, NULL),
+(5, 'Sarah', 'Haddad', 'sarah.haddad@example.com', '$2b$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', NULL, 'nurse', '2026-09-16 12:29:43', '2026-09-16 12:29:43', NULL, NULL),
+(6, 'David', 'Thompson', 'david.thompson@example.com', '$2b$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', NULL, 'nurse', '2026-09-16 12:29:43', '2026-09-16 12:29:43', NULL, NULL),
+(7, 'Lisa', 'Park', 'lisa.park@example.com', '$2b$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', NULL, 'nurse', '2026-09-16 12:29:43', '2026-09-16 12:29:43', NULL, NULL),
+(8, 'Maria', 'Santos', 'maria.santos@example.com', '$2b$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', NULL, 'nurse', '2026-09-16 12:29:43', '2026-09-16 12:29:43', NULL, NULL),
+(9, 'Aisha', 'Patel', 'aisha.patel@example.com', '$2b$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', NULL, 'nurse', '2026-09-16 12:29:43', '2026-09-16 12:29:43', NULL, NULL),
+(10, 'Sami', 'Okonkwo', 'sami.okonkwo@example.com', '$2b$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', NULL, 'nurse', '2026-09-16 12:29:43', '2026-09-16 12:29:43', NULL, NULL),
+(11, 'Emily', 'Johnson', 'emily.johnson@example.com', '$2b$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', NULL, 'nurse', '2026-09-16 12:29:43', '2026-09-16 12:29:43', NULL, NULL),
+(12, 'Michael', 'Brown', 'michael.brown@example.com', '$2b$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldLJZdL17lhWy', NULL, 'nurse', '2026-09-16 12:29:43', '2026-09-16 12:29:43', NULL, NULL),
+(13, 'Sophia', 'Wilson', 'sophia.wilson@example.com', '$2b$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', NULL, 'nurse', '2026-09-16 12:29:43', '2026-09-16 12:29:43', NULL, NULL),
+(14, 'Daniel', 'Miller', 'daniel.miller@example.com', '$2b$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', NULL, 'nurse', '2026-09-16 12:29:43', '2026-09-16 12:29:43', NULL, NULL),
+(15, 'Olivia', 'Martinez', 'olivia.martinez@example.com', '$2b$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', NULL, 'nurse', '2026-09-16 12:29:43', '2026-09-16 12:29:43', NULL, NULL),
+(16, 'James', 'Anderson', 'james.anderson@example.com', '$2b$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', NULL, 'nurse', '2026-09-16 12:29:43', '2026-09-16 12:29:43', NULL, NULL),
+(17, 'Nora', 'Williams', 'nora.williams@example.com', '$2b$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', NULL, 'nurse', '2026-09-16 12:29:43', '2026-09-16 12:29:43', NULL, NULL),
+(18, 'Daniel', 'Carter', 'daniel.carter@example.com', '$2b$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', NULL, 'nurse', '2026-09-16 12:29:43', '2026-09-16 12:29:43', NULL, NULL),
+(19, 'Emma', 'Davis', 'emma.davis@example.com', '$2b$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', NULL, 'nurse', '2026-09-16 12:29:43', '2026-09-16 12:29:43', NULL, NULL),
+(20, 'Maya', 'Robinson', 'maya.robinson@example.com', '$2b$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', NULL, 'nurse', '2026-09-16 12:29:43', '2026-09-16 12:29:43', NULL, NULL),
+(21, 'Noah', 'Williams', 'noah.williams@example.com', '$2b$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', NULL, 'nurse', '2026-09-16 12:29:43', '2026-09-16 12:29:43', NULL, NULL),
+(22, 'Grace', 'Lee', 'grace.lee@example.com', '$2b$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', NULL, 'nurse', '2026-09-16 12:29:43', '2026-09-16 12:29:43', NULL, NULL),
+(23, 'Ethan', 'Moore', 'ethan.moore@example.com', '$2b$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', NULL, 'nurse', '2026-09-16 12:29:43', '2026-09-16 12:29:43', NULL, NULL),
+(24, 'Chloe', 'Taylor', 'chloe.taylor@example.com', '$2b$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', NULL, 'nurse', '2026-09-16 12:29:43', '2026-09-16 12:29:43', NULL, NULL),
+(25, 'Ayman', 'Harris', 'ayman.harris@example.com', '$2b$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', NULL, 'nurse', '2026-09-16 12:29:43', '2026-09-16 12:29:43', NULL, NULL),
+(26, 'jane', 'doe', 'janDoe@gmail.com', '$2b$10$Xp6Yu7Qu.o03Wgv7cR9T3OFyQ.60R5Upp6tGDfJoy.xXfteAm3CQi', '81230455', 'patient', '2026-09-17 07:46:07', '2026-09-17 07:46:07', NULL, NULL),
+(27, 'sara', 'sara', 'sara@gmail.com', '$2b$10$UerfGGR60rJC2L32yGbVlupchC6EXTgNWdzTcWzP4PfnK7VXbf.R2', '81233333', 'patient', '2026-09-17 07:47:57', '2026-09-17 07:47:57', NULL, NULL),
+(28, 'Razan', 'Hassoun', 'rznhassoun@gmail.com', '$2b$10$wt9ppHxFI2boAoO/YLA5g..3jE6PFbVLi7AMG1Z91mDIMSIVk1HCi', '70852961', 'nurse', '2026-09-17 08:02:21', '2026-09-17 08:02:21', NULL, NULL),
+(29, 'Roro', 'hass', 'razan@gmail.com', '$2b$10$dT0u/lrOi6LsOyis7sU4EOqBxjZOXBh3kEGuyy6cuZkTxliVvmGUC', '70852961', 'nurse', '2026-09-17 08:04:10', '2026-09-17 08:04:10', NULL, NULL),
+(30, 'sasa', 'sasa', 'sasa@email.com', '$2b$10$YO4ARgLNmV08YY3s3WIxJOjPQFYf9dcahU09.zgn26nMg3r9CfKJW', '3030303', 'nurse', '2026-09-17 09:10:40', '2026-09-17 09:10:40', NULL, NULL),
+(32, 'jana', 'boulad', 'jana@gmai.com', '$2b$10$fGsh3o6CK5AQy07k58zNCOIEUKt2KjhvxNI1vto2cRLTfOWgCqaRO', '76986611', 'nurse', '2026-09-19 12:12:55', '2026-09-19 12:12:55', NULL, NULL),
+(33, 'abedlrazak', 'boulad', 'bouladabedlrazak@gmail.com', 'google_authenticated_oauth', NULL, 'patient', '2026-09-19 16:43:02', '2026-09-19 16:43:02', NULL, NULL),
+(34, 'habib', 'sarrag', 'habib@gmail.com', '$2b$10$1KVZAfDyTHMG/77txpoo1evBCuoVipMfuDWX2D2XLmCF2/cTIzsya', '76986611', 'patient', '2026-09-19 16:57:44', '2026-09-19 16:57:44', NULL, NULL),
+(35, 'amjad', 'boulad', 'amjad@gmail.com', '$2b$10$lCACcoX78sfwUNb5EjKkOe3NJugkw6G4gFnHdaXIOyu7IXC1gzBrW', '76986611', 'nurse', '2026-09-19 17:03:31', '2026-09-19 17:03:31', NULL, NULL),
+(36, 'King ', 'Kingboulad', 'kingkingboulad@gmail.com', '$2b$10$BhH0GhNh2CvY02I231yvCuBDCq8nzap1sL9aQBpjQsUiO0xZLHVpy', NULL, 'patient', '2026-09-19 17:29:56', '2026-09-28 17:13:29', NULL, NULL),
+(37, 'dora', 'sarrg', 'dora@gmail.com', '$2b$10$4YOxQrtprIVwX2TokOsI0OoMsOqyrcPmvdywifWD2LpF9to.Wv44W', '76986611', 'patient', '2026-09-19 17:32:49', '2026-09-19 17:32:49', NULL, NULL),
+(38, 'boudi', 'boulad', 'boudi@gmail.com', '$2b$10$niy6DwQsc08aDx4dga7eteScEk4bvP.yzudmOFAviON5cyZtMsRCy', '76986611', 'nurse', '2026-09-20 10:48:15', '2026-09-20 10:48:15', NULL, NULL),
+(42, 'jihan', 'eid', 'jihan@gmail.com', '$2b$10$40/2rrObwnQrq8dx/E.UX.mKoER.y7Ag.JqJ1E.QTAn0Od3EoF1UO', '76986611', 'nurse', '2026-09-22 10:55:35', '2026-09-22 11:05:22', NULL, NULL),
+(43, 'noura', 'boulad', 'noura@gmail.com', '$2b$10$TRAOveKGyeaZHmz.HmYuEeQrlww5Je1Q0IVJl28LxWBN0Niv65clm', '7698611', 'nurse', '2026-09-25 07:51:55', '2026-09-25 07:59:02', NULL, NULL),
+(44, 'razan', 'haasoun', 'roro@gmail.com', '$2b$10$fGu/1lYmgEmkjoh/Cla.WeqGiH9aoxftp16XCgnYcEJhIWZ9VeawG', NULL, 'admin', '2026-09-25 08:32:59', '2026-09-25 08:35:40', NULL, NULL),
+(45, 'houda', 'sarag', 'houda@gmail.com', '$2b$10$wy2YN0Z1XlWaZ3jaSnB5g.Zbu7Kvk36dAND3zli5y4iragW7Pl5oy', '123456789', 'patient', '2026-09-25 08:43:24', '2026-09-25 08:43:24', NULL, NULL),
+(46, 'abdo', 'abdo', 'abdo@gmail.com', '$2b$10$pT6SxtRWXn2IGi5Sf3zEqOZTNkB0Iz9qAk8EsJ1BAmDXXao2Sz342', '76986611', 'nurse', '2026-09-25 16:49:44', '2026-09-25 16:49:44', NULL, NULL);
 
 --
 -- Indexes for dumped tables
@@ -359,7 +368,7 @@ ALTER TABLE `care_requests`
 -- AUTO_INCREMENT for table `contact_messages`
 --
 ALTER TABLE `contact_messages`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `nurse_categories`
