@@ -19,7 +19,7 @@ export default function HowItWorks() {
   ];
 
   return (
-    <section className="bg-[#f0f6fa] py-16 sm:py-24">
+    <section id="Howitworks" className="bg-[#f0f6fa] py-16 sm:py-24">
       <div className="container mx-auto px-4">
         {/* SUBTITLE BADGE */}
         <p className="text-center text-xs font-semibold tracking-widest text-[#064e52] uppercase">

@@ -32,6 +32,7 @@ export default function HowToJoin() {
 
   return (
     <section
+	id="howtoapply"
       dir={dir}
       className="bg-[#F8FCFD] py-16 md:py-24"
     >

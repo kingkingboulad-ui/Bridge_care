@@ -178,7 +178,7 @@ export default function TermsPage() {
           </section>
 
           {/* CONTACT / CTA */}
-          <section className="flex flex-col items-center justify-between gap-6 rounded-xl bg-[#00535B] p-6 text-center shadow-xl md:flex-row md:text-start lg:p-8">
+          <section 	id="helpful" className="flex flex-col items-center justify-between gap-6 rounded-xl bg-[#00535B] p-6 text-center shadow-xl md:flex-row md:text-start lg:p-8">
             <div className="max-w-xl">
               <h3 className="text-2xl font-bold tracking-tight text-white">
                 {t("terms.ctaTitle")}

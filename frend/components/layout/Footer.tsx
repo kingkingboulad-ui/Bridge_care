@@ -11,7 +11,7 @@ const columns = [
       { href: "/find-a-nurses", label: "Find a Nurse" },
       { href: "/book", label: "Request Care" },
       { href: "/Ai-care-assistant", label: "AI Care Assistant" },
-      { href: "/#HowItWorks", label: "How It Works" },
+      { href: "/#Howitworks", label: "How It Works" },
     ],
   },
 
@@ -20,8 +20,8 @@ const columns = [
     links: [
       { href: "/join-as-a-nurse", label: "Join as a Nurse" },
       { href: "/profile", label: "Nurse Dashboard" },
-      { href: "/how-to-apply", label: "How to Apply" },
-      { href: "/nurse-resources", label: "Nurse Resources" },
+      { href: "/for-nurses/#howtoapply", label: "How to Apply" },
+      { href: "/for-nurses/#helpful", label: "Helpful Guides" },
     ],
   },
 
@@ -54,7 +54,7 @@ export default function Footer() {
     "Join as a Nurse": "joinAsNurse",
     "Nurse Dashboard": "nurseDashboard",
     "How to Apply": "howToApply",
-    "Nurse Resources": "nurseResources",
+    "Helpful Guides": "HelpfulGuides",
     "About Us": "aboutUs",
     "Safety & Trust": "safetyTrust",
     "Privacy Policy": "privacyPolicy",
