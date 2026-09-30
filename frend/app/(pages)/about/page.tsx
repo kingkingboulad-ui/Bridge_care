@@ -1,6 +1,11 @@
 "use client";
 
-import { ShieldCheck, HeartHandshake, Users, Sparkles } from "lucide-react";
+import {
+  ShieldCheck,
+  HeartHandshake,
+  Users,
+  Sparkles,
+} from "lucide-react";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import Button from "@/components/ui/Button";
@@ -59,19 +64,21 @@ export default function AboutPage() {
 
   return (
     <>
-  
+     
 
       <main>
         {/* HERO */}
-        <section className="bg-gradient-to-br from-teal-800 to-teal-900 py-20 text-white">
+        <section className="bg-[#00535B] py-20 text-white">
           <div className="container-content text-center">
-            <span className="eyebrow">{t("about.ourStory")}</span>
+            <span className="eyebrow">
+              {t("about.ourStory")}
+            </span>
 
             <h1 className="mx-auto mt-4 max-w-2xl text-4xl font-bold leading-tight sm:text-5xl">
               {t("about.trustedCare")}
             </h1>
 
-            <p className="mx-auto mt-4 max-w-xl text-teal-100/90">
+            <p className="mx-auto mt-4 max-w-xl text-white/90">
               {t("about.heroDescription")}
             </p>
           </div>
@@ -82,7 +89,7 @@ export default function AboutPage() {
           <div className="container-content grid grid-cols-2 gap-8 text-center sm:grid-cols-4">
             {stats.map((stat) => (
               <div key={stat.key}>
-                <p className="text-3xl font-bold text-teal-800">
+                <p className="text-3xl font-bold text-[#00535B]">
                   {stat.value}
                 </p>
 
@@ -116,24 +123,31 @@ export default function AboutPage() {
             </div>
 
             <div className="grid grid-cols-2 gap-4">
-              <div className="rounded-2xl bg-teal-700 p-6 text-white">
-                <p className="text-2xl font-bold">2026</p>
+              {/* 2026 */}
+              <div className="rounded-2xl bg-[#00535B] p-6 text-white">
+                <p className="text-2xl font-bold">
+                  2026
+                </p>
 
-                <p className="mt-1 text-sm text-teal-100/80">
+                <p className="mt-1 text-sm text-white/80">
                   {t("about.foundedIn")}
                 </p>
               </div>
 
+              {/* 100% */}
               <div className="rounded-2xl bg-navy-950 p-6 text-white">
-                <p className="text-2xl font-bold">100%</p>
+                <p className="text-2xl font-bold">
+                  100%
+                </p>
 
                 <p className="mt-1 text-sm text-white/60">
                   {t("about.licensedChecked")}
                 </p>
               </div>
 
+              {/* 24/7 */}
               <div className="col-span-2 rounded-2xl bg-white p-6 shadow-sm">
-                <p className="text-2xl font-bold text-teal-800">
+                <p className="text-2xl font-bold text-[#00535B]">
                   24/7
                 </p>
 
@@ -162,7 +176,7 @@ export default function AboutPage() {
                   key={value.titleKey}
                   className="rounded-2xl bg-cloud p-6"
                 >
-                  <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-teal-100 text-teal-700">
+                  <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#00535B]/10 text-[#00535B]">
                     <value.icon size={20} />
                   </span>
 
@@ -196,7 +210,8 @@ export default function AboutPage() {
                   key={member.name}
                   className="rounded-2xl bg-white p-6 shadow-sm"
                 >
-                  <span className="flex h-12 w-12 items-center justify-center rounded-full bg-teal-700 text-sm font-semibold text-white">
+                  {/* Initials */}
+                  <span className="flex h-12 w-12 items-center justify-center rounded-full bg-[#00535B] text-sm font-semibold text-white">
                     {member.name
                       .split(" ")
                       .map((w) => w[0])
@@ -207,7 +222,7 @@ export default function AboutPage() {
                     {member.name}
                   </h3>
 
-                  <p className="text-sm font-medium text-teal-700">
+                  <p className="text-sm font-medium text-[#00535B]">
                     {t(`about.${member.roleKey}`)}
                   </p>
 
@@ -221,13 +236,13 @@ export default function AboutPage() {
         </section>
 
         {/* CTA */}
-        <section className="bg-gradient-to-br from-teal-700 to-teal-900 py-20 text-center text-white">
+        <section className="bg-[#00535B] py-20 text-center text-white">
           <div className="container-content">
             <h2 className="text-3xl font-bold sm:text-4xl">
               {t("about.joinUs")}
             </h2>
 
-            <p className="mx-auto mt-3 max-w-md text-teal-100/90">
+            <p className="mx-auto mt-3 max-w-md text-white/90">
               {t("about.ctaDescription")}
             </p>
 
@@ -236,7 +251,10 @@ export default function AboutPage() {
                 {t("about.getStarted")}
               </Button>
 
-              <Button href="/join-as-a-nurse" variant="outline">
+              <Button
+                href="/join-as-a-nurse"
+                variant="outline"
+              >
                 {t("about.joinAsNurse")}
               </Button>
             </div>
@@ -244,7 +262,7 @@ export default function AboutPage() {
         </section>
       </main>
 
-   
+    
     </>
   );
 }

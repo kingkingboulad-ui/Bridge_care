@@ -59,7 +59,7 @@ export default function Benefits() {
   const { t, dir } = useLanguage();
 
   return (
-    <section
+    <section id="helpful"
       dir={dir}
       className="bg-[#F2F8FC] px-4 py-16 sm:px-6 md:py-20 lg:py-24"
     >
