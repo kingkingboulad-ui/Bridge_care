@@ -13,6 +13,7 @@ import bookingRoutes from "./router/bookingRoutes.js";
 import aiCareRoutes from "./router/aiCareRoutes.js";
 import adminRoutes from "./router/adminRoutes.js";
 import nurseSearchRoutes from "./router/nurseSearchRoutes.js";
+import settingsRoutes from "./router/settings.routes.js";
 
 // NEW: Contact
 import contactRoutes from './router/contactRoutes.js';
@@ -50,7 +51,7 @@ app.use("/api/admin", adminRoutes);
 
 // NEW: Contact Us
 app.use('/api/contact', contactRoutes);
-
+app.use("/api/settings", settingsRoutes);
 // Start server
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);

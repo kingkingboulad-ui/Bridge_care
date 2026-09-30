@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 29, 2026 at 11:54 AM
+-- Generation Time: Sep 30, 2026 at 12:40 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -79,7 +79,8 @@ CREATE TABLE `contact_messages` (
 --
 
 INSERT INTO `contact_messages` (`id`, `name`, `email`, `subject`, `message`, `status`, `created_at`, `reply_message`, `replied_at`) VALUES
-(2, 'akil  boulad', 'akil@gmail.com', 'general', 'hi', 'unread', '2026-09-28 16:45:07', NULL, NULL);
+(2, 'akil  boulad', 'akil@gmail.com', 'general', 'hi', 'read', '2026-09-28 16:45:07', NULL, NULL),
+(3, 'akil  boulad', 'akil@gmail.com', 'general', 'اه', 'unread', '2026-09-30 10:38:54', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -242,6 +243,26 @@ INSERT INTO `reviews` (`id`, `nurse_id`, `patient_id`, `rating`, `comment`, `cre
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `site_settings`
+--
+
+CREATE TABLE `site_settings` (
+  `settings_key` varchar(50) NOT NULL,
+  `settings_value` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL CHECK (json_valid(`settings_value`)),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `site_settings`
+--
+
+INSERT INTO `site_settings` (`settings_key`, `settings_value`, `updated_at`) VALUES
+('about_content', '{\"foundedYear\": \"2026\", \"statFamilies\": \"10,000+\", \"statNurses\": \"2,500+\", \"statCities\": \"40+\", \"statRating\": \"4.9/5\", \"storyParagraph1\": \"\", \"storyParagraph2\": \"\"}', '2026-09-30 10:04:14'),
+('contact_info', '{\"email\":\"test@gmail.com\",\"phone\":\"+961 00 000 000\",\"emergencyPhone\":\"112 / +961 00 000 000\",\"location\":\"Beirut, Lebanon\",\"workingHours\":\"24/7 Available\"}', '2026-09-30 10:34:40');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `users`
 --
 
@@ -348,6 +369,12 @@ ALTER TABLE `reviews`
   ADD KEY `patient_id` (`patient_id`);
 
 --
+-- Indexes for table `site_settings`
+--
+ALTER TABLE `site_settings`
+  ADD PRIMARY KEY (`settings_key`);
+
+--
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
@@ -368,7 +395,7 @@ ALTER TABLE `care_requests`
 -- AUTO_INCREMENT for table `contact_messages`
 --
 ALTER TABLE `contact_messages`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `nurse_categories`
