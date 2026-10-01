@@ -45,7 +45,7 @@ export default function AdminProfileClient({ initialProfile }: Props) {
 
     try {
       await axios.put(
-        "http://localhost:5000/api/admin/update-profile",
+        `${process.env.NEXT_PUBLIC_API_URL}/api/admin/update-profile`,
         {
           first_name: profile.firstName,
           last_name: profile.lastName,
@@ -83,7 +83,7 @@ export default function AdminProfileClient({ initialProfile }: Props) {
     setLoading(true);
     try {
       await axios.put(
-        "http://localhost:5000/api/admin/change-password",
+        `${process.env.NEXT_PUBLIC_API_URL}/api/admin/change-password`,
         {
           currentPassword: passwordData.currentPassword,
           newPassword: passwordData.newPassword,

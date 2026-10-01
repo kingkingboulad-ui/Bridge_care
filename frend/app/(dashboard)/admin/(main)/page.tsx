@@ -69,7 +69,7 @@ export default function AdminDashboardPage() {
       setError(null);
 
       // يعتمد كلياً على الكوكي المرسل تلقائياً من المتصفح
-      const response = await axios.get('http://localhost:5000/api/dashboard/stats', {
+      const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/dashboard/stats`, {
         withCredentials: true
       });
 

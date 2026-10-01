@@ -36,7 +36,7 @@ export default function ContactPage() {
   const [sending, setSending] = useState(false);
   const [contactInfo, setContactInfo] = useState<ContactSettings>(DEFAULT_SETTINGS);
 
-  const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
+  const API_URL = process.env.NEXT_PUBLIC_API_URL ;
 
   // جلب البيانات الديناميكية المحفوظة من قبل الأدمن
   useEffect(() => {

@@ -24,7 +24,7 @@ export default function ActivatedPage() {
   useEffect(() => {
     const fetchCurrentNurse = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/nurses/me", {
+        const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/nurses/me`, {
           withCredentials: true,
         });
 
@@ -49,7 +49,7 @@ export default function ActivatedPage() {
     if (imageSrc.startsWith("http://") || imageSrc.startsWith("https://")) {
       return imageSrc;
     }
-    return `http://localhost:5000${imageSrc.startsWith("/") ? "" : "/"}${imageSrc}`;
+    return `${process.env.NEXT_PUBLIC_API_URL}${imageSrc.startsWith("/") ? "" : "/"}${imageSrc}`;
   };
 
   const displayName = nurse

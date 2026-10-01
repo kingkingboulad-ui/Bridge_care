@@ -46,7 +46,7 @@ export default function PatientsManagementPage() {
       setLoading(true);
       setError(null);
 
-      const response = await axios.get('http://localhost:5000/api/patients', {
+      const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/patients`, {
         withCredentials: true,
       });
 

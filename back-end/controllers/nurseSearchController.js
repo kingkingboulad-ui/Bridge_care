@@ -6,7 +6,30 @@ export const getNurses = async (req, res) => {
 
     console.log("👉 [Backend Search Query]:", { careType, location });
 
-    let query = `
+    let conditions = ["np.status = 'approved'"];
+    const params = [];
+
+    // 1. فلترة الموقع
+    if (location && location.trim() !== '') {
+      conditions.push("LOWER(np.location) LIKE LOWER(?)");
+      params.push(`%${location.trim()}%`);
+    }
+
+    // 2. فلترة التخصص/التصنيف (مباشرة قبل GROUP BY لضمان التوافق والأداء)
+    if (careType && careType !== 'All' && careType.trim() !== '') {
+      conditions.push(`(
+        LOWER(np.specialization) LIKE LOWER(?) 
+        OR np.id IN (
+          SELECT nurse_id FROM nurse_categories 
+          WHERE LOWER(category) LIKE LOWER(?)
+        )
+      )`);
+      params.push(`%${careType.trim()}%`, `%${careType.trim()}%`);
+    }
+
+    const whereClause = conditions.length > 0 ? `WHERE ${conditions.join(' AND ')}` : '';
+
+    const query = `
       SELECT 
         np.id,
         CONCAT(u.first_name, ' ', u.last_name) AS full_name,
@@ -19,32 +42,17 @@ export const getNurses = async (req, res) => {
         np.image,
         np.cv_file,
         np.status,
-        COALESCE(GROUP_CONCAT(nc.category SEPARATOR ', '), 'General Care') AS categories
+        COALESCE(GROUP_CONCAT(DISTINCT nc.category SEPARATOR ', '), 'General Care') AS categories
       FROM nurse_profiles np
       JOIN users u ON np.user_id = u.id
       LEFT JOIN nurse_categories nc ON np.id = nc.nurse_id
-      WHERE np.status = 'approved'
+      ${whereClause}
+      GROUP BY np.id, u.first_name, u.last_name
+      ORDER BY np.id DESC
     `;
 
-    const params = [];
-
-    // 1. فلترة الموقع الجغرافي
-    if (location && location.trim() !== '') {
-      query += ` AND LOWER(np.location) LIKE LOWER(?)`;
-      params.push(`%${location.trim()}%`);
-    }
-
-    query += ` GROUP BY np.id`;
-
-    // 2. فلترة التخصص
-    if (careType && careType !== 'All' && careType.trim() !== '') {
-      query += ` HAVING LOWER(categories) LIKE LOWER(?) OR LOWER(np.specialization) LIKE LOWER(?)`;
-      params.push(`%${careType.trim()}%`, `%${careType.trim()}%`);
-    }
-
-    query += ` ORDER BY np.id DESC`;
-
-    const [nurses] = await pool.execute(query, params);
+    // استخدام pool.query يحل مشاكل prepared statements غير المتوقعة مع GROUP_CONCAT
+    const [nurses] = await pool.query(query, params);
 
     console.log(`✅ [Backend Result]: Found ${nurses.length} nurses`);
 

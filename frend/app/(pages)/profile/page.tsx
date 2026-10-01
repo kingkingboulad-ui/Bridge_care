@@ -309,7 +309,7 @@ export default function NurseProfilePage() {
       }
 
       const response = await fetch(
-        "http://localhost:5000/api/nurses/me/update",
+   `${process.env.NEXT_PUBLIC_API_URL}/api/nurses/me/update`,
         {
           method: "PUT",
           credentials: "include",

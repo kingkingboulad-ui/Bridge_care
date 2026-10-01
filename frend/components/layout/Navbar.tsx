@@ -75,7 +75,7 @@ export default function Navbar() {
           : null;
 
       const res = await axios.get(
-        "http://localhost:5000/api/auth/me",
+ `${process.env.NEXT_PUBLIC_API_URL}/api/auth/me`,
         {
           withCredentials: true,
           headers: {
@@ -158,7 +158,7 @@ export default function Navbar() {
   const handleLogout = async () => {
     try {
       await axios.post(
-        "http://localhost:5000/api/auth/logout",
+   `${process.env.NEXT_PUBLIC_API_URL}/api/auth/logout`,
         {},
         {
           withCredentials: true,

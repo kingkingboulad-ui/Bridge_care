@@ -55,7 +55,7 @@ const getFullImageUrl = (imagePath?: string | null, fallbackName: string = 'Nurs
   }
   const clean = imagePath.trim();
   if (clean.startsWith('http')) return clean;
-  if (clean.startsWith('/uploads/')) return `http://localhost:5000${clean}`;
+  if (clean.startsWith('/uploads/')) return `${process.env.NEXT_PUBLIC_API_URL}${clean}`;
   return clean.startsWith('/') ? clean : `/${clean}`;
 };
 
@@ -78,7 +78,7 @@ export default function NursesManagementPage() {
       setLoading(true);
       setError(null);
 
-      const response = await axios.get('http://localhost:5000/api/nurses', {
+      const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/nurses`, {
         withCredentials: true,
       });
 
@@ -91,7 +91,7 @@ export default function NursesManagementPage() {
     } catch (err: any) {
       console.error('Failed to fetch nurses:', err);
       try {
-        const fallbackRes = await axios.get('http://localhost:5000/api/nurses/getall', {
+        const fallbackRes = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/nurses/getall`, {
           withCredentials: true,
         });
         const fallbackData = fallbackRes.data?.nurses || fallbackRes.data || [];
@@ -126,7 +126,7 @@ export default function NursesManagementPage() {
       setUpdatingId(nurseId);
 
       await axios.put(
-        `http://localhost:5000/api/nurses/${nurseId}/status`,
+        `${process.env.NEXT_PUBLIC_API_URL}/api/nurses/${nurseId}/status`,
         { status: newStatus },
         { withCredentials: true }
       );
@@ -150,7 +150,7 @@ export default function NursesManagementPage() {
     try {
       setDeletingId(nurseId);
 
-      await axios.delete(`http://localhost:5000/api/nurses/${nurseId}`, {
+      await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/api/nurses/${nurseId}`, {
         withCredentials: true,
       });
 

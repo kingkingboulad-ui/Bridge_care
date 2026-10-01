@@ -51,7 +51,7 @@ function FindCareContent() {
   const fetchNurses = async () => {
     try {
       setLoading(true);
-      const res = await axios.get('http://localhost:5000/api/nurses/search', {
+      const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/nurses/search`, {
         params: {
           careType: careType !== 'All' ? careType : undefined,
           location: location.trim() || undefined,

@@ -116,7 +116,7 @@ async function getContactSettings(): Promise<ContactSettings> {
   };
 
   try {
-    const res = await fetch("http://localhost:5000/api/settings/contact_info", {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/settings/contact_info`, {
       cache: "no-store",
     });
     if (res.ok) {

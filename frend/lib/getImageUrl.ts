@@ -11,7 +11,7 @@ export function getImageUrl(path?: string | null, fallbackName: string = ""): st
     }
   
     // استخدام المتغير البيئي للباك إند
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL ;
     const cleanPath = path.startsWith("/") ? path : `/${path}`;
   
     return `${apiUrl}${cleanPath}`;

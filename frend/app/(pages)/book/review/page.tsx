@@ -89,7 +89,7 @@ export default function ReviewPage() {
 
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/care-requests",
+        `${process.env.NEXT_PUBLIC_API_URL}/api/care-requests`,
         data,
         { withCredentials: true }
       );

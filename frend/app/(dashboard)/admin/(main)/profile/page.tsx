@@ -17,7 +17,7 @@ async function getAdminProfile(): Promise<AdminProfileData> {
 
   if (token) {
     try {
-      const res = await fetch("http://localhost:5000/api/admin/profile", {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/admin/profile`, {
         headers: {
           Cookie: `token=${token}`,
         },

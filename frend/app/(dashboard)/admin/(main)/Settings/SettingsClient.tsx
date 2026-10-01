@@ -99,7 +99,7 @@ export default function SettingsClient({
 
     try {
       await axios.put(
-        "http://localhost:5000/api/admin/update-profile",
+   `${process.env.NEXT_PUBLIC_API_URL}/api/admin/update-profile`,
         {
           first_name: profile.firstName,
           last_name: profile.lastName,
@@ -125,7 +125,7 @@ export default function SettingsClient({
 
     try {
       await axios.put(
-        "http://localhost:5000/api/settings/about_content",
+      `${process.env.NEXT_PUBLIC_API_URL}/api/settings/about_content`,
         aboutData,
         { withCredentials: true }
       );
@@ -147,7 +147,7 @@ export default function SettingsClient({
 
     try {
       await axios.put(
-        "http://localhost:5000/api/settings/contact_info",
+   `${process.env.NEXT_PUBLIC_API_URL}/api/settings/contact_info`,
         contactData,
         { withCredentials: true }
       );
@@ -180,7 +180,7 @@ export default function SettingsClient({
 
     try {
       await axios.put(
-        "http://localhost:5000/api/admin/change-password",
+     `${process.env.NEXT_PUBLIC_API_URL}/api/admin/change-password`,
         {
           currentPassword: passwords.currentPassword,
           newPassword: passwords.newPassword,
@@ -211,7 +211,7 @@ export default function SettingsClient({
 
     try {
       await axios.post(
-        "http://localhost:5000/api/admin/create",
+   `${process.env.NEXT_PUBLIC_API_URL}/api/admin/create`,
         {
           first_name: newAdmin.firstName,
           last_name: newAdmin.lastName,

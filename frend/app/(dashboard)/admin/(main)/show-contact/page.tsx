@@ -39,7 +39,7 @@ export default function AdminContactsPage() {
   const [replyText, setReplyText] = useState('');
   const [sendingReply, setSendingReply] = useState(false);
 
-  const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+  const API_URL = process.env.NEXT_PUBLIC_API_URL ;
 
   // 1. جلب الرسائل
   const fetchMessages = async () => {

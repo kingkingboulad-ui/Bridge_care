@@ -74,7 +74,7 @@ export default function PatientProfilePage() {
         }
 
         const res = await axios.get(
-          "http://localhost:5000/api/patients/me",
+          `${process.env.NEXT_PUBLIC_API_URL}/api/patients/me`,
           {
             withCredentials: true,
             headers: {
@@ -92,7 +92,7 @@ export default function PatientProfilePage() {
 
         setError(
           err.response?.data?.message ||
-            t("patientProfile.loginToContinue")
+          t("patientProfile.loginToContinue")
         );
       } finally {
         setLoading(false);
@@ -159,9 +159,9 @@ export default function PatientProfilePage() {
         {/* Header Profile Card */}
         <div className="bg-white rounded-3xl border border-slate-200/80 p-6 sm:p-8 shadow-sm">
           <div className="flex flex-col sm:flex-row items-center sm:items-start justify-between gap-6">
-            
+
             <div className="flex flex-col sm:flex-row items-center gap-5 text-center sm:text-left">
-              
+
               <div className="w-20 h-20 rounded-2xl bg-[#E8F7F8] border-2 border-[#006D77]/20 flex items-center justify-center text-[#006D77] text-2xl font-bold">
                 {patient.first_name.charAt(0)}
                 {patient.last_name.charAt(0)}
@@ -178,7 +178,7 @@ export default function PatientProfilePage() {
                 </p>
 
                 <div className="flex flex-wrap items-center justify-center sm:justify-start gap-4 text-xs text-gray-600 mt-3">
-                  
+
                   <span className="flex items-center gap-1.5">
                     <Mail className="w-3.5 h-3.5 text-[#006D77]" />
                     {patient.email}
@@ -206,9 +206,9 @@ export default function PatientProfilePage() {
 
         {/* Care Requests Section */}
         <div className="bg-white rounded-3xl border border-slate-200/80 p-6 sm:p-8 shadow-sm space-y-6">
-          
+
           <div className="flex items-center justify-between border-b border-slate-100 pb-4">
-            
+
             <div>
               <h2 className="text-lg font-bold text-[#092F35]">
                 {t("patientProfile.careRequestsStatus")}
@@ -227,7 +227,7 @@ export default function PatientProfilePage() {
 
           {requests.length === 0 ? (
             <div className="py-14 text-center">
-              
+
               <Activity className="w-10 h-10 text-slate-300 mx-auto mb-2" />
 
               <p className="text-sm font-semibold text-slate-700">
@@ -250,15 +250,15 @@ export default function PatientProfilePage() {
             </div>
           ) : (
             <div className="space-y-4">
-              
+
               {requests.map((req) => (
                 <div
                   key={req.id}
                   className="rounded-2xl border border-slate-200/90 p-5 bg-[#fafcfc] hover:border-slate-300 transition-all space-y-4"
                 >
-                  
+
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-3">
-                    
+
                     <div>
                       <span className="text-xs font-bold text-slate-800">
                         {t("patientProfile.booking")} #{req.id}
@@ -272,7 +272,7 @@ export default function PatientProfilePage() {
 
                     {/* Status Badges */}
                     <div>
-                      
+
                       {req.status === "accepted" && (
                         <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
                           <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
@@ -305,7 +305,7 @@ export default function PatientProfilePage() {
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-xs">
-                    
+
                     <div>
                       <span className="text-slate-400 block font-medium">
                         {t("patientProfile.serviceType")}

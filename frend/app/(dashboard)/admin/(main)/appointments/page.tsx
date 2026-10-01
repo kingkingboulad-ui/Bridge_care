@@ -64,7 +64,7 @@ export default function CareRequestsManagementPage() {
       setError(null);
       
       // استبدل المسار بالـ Endpoint الخاص بك إن كان مختلفاً
-      const res = await fetch('http://localhost:5000/api/dashboard/stats'); 
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/dashboard/stats`);
       const data = await res.json();
 
       if (data.success) {

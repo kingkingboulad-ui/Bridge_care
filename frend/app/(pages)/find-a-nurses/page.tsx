@@ -110,11 +110,10 @@ function RateNurseModal({
                 >
                   <Star
                     size={28}
-                    className={`${
-                      (hoveredRating || selectedRating) >= star
-                        ? "fill-amber-400 text-amber-400"
-                        : "text-slate-200"
-                    } transition-colors`}
+                    className={`${(hoveredRating || selectedRating) >= star
+                      ? "fill-amber-400 text-amber-400"
+                      : "text-slate-200"
+                      } transition-colors`}
                   />
                 </button>
               ))}
@@ -201,8 +200,9 @@ export default function NurseSearchPage() {
         setLoading(true);
         setError(null);
 
+
         const response = await fetch(
-          "http://localhost:5000/api/nurses/getall",
+          `${process.env.NEXT_PUBLIC_API_URL}/api/nurses/getall`,
           {
             method: "GET",
             headers: {
@@ -589,11 +589,10 @@ export default function NurseSearchPage() {
                       key={page}
                       type="button"
                       onClick={() => goToPage(page)}
-                      className={`h-9 w-9 rounded-lg text-sm font-medium transition sm:h-10 sm:w-10 ${
-                        currentPage === page
-                          ? "bg-[#00535B] text-white"
-                          : "border border-slate-200 bg-white text-slate-700 hover:bg-slate-50"
-                      }`}
+                      className={`h-9 w-9 rounded-lg text-sm font-medium transition sm:h-10 sm:w-10 ${currentPage === page
+                        ? "bg-[#00535B] text-white"
+                        : "border border-slate-200 bg-white text-slate-700 hover:bg-slate-50"
+                        }`}
                     >
                       {page}
                     </button>
@@ -625,9 +624,8 @@ export default function NurseSearchPage() {
           nurseName={
             ratingNurse.name ||
             (ratingNurse as any).fullName ||
-            `${(ratingNurse as any).first_name || ""} ${
-              (ratingNurse as any).last_name || ""
-            }`.trim() ||
+            `${(ratingNurse as any).first_name || ""} ${(ratingNurse as any).last_name || ""
+              }`.trim() ||
             t("nurse")
           }
           isOpen={Boolean(ratingNurse)}
@@ -637,10 +635,10 @@ export default function NurseSearchPage() {
               prev.map((n) =>
                 n.id === ratingNurse.id
                   ? {
-                      ...n,
-                      rating: newRating,
-                      reviews: newReviewsCount,
-                    }
+                    ...n,
+                    rating: newRating,
+                    reviews: newReviewsCount,
+                  }
                   : n
               )
             );

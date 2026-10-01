@@ -76,7 +76,7 @@ export default function NurseDetailsPage() {
         setError("");
 
         const response = await fetch(
-          `http://localhost:5000/api/nurses/users/${detailsId}`,
+          `${process.env.NEXT_PUBLIC_API_URL}/api/nurses/users/${detailsId}`,
           {
             method: "GET",
             credentials: "include",
@@ -193,15 +193,15 @@ export default function NurseDetailsPage() {
 
   const nursePrice =
     nurse.price !== undefined &&
-    nurse.price !== null &&
-    nurse.price !== ""
+      nurse.price !== null &&
+      nurse.price !== ""
       ? nurse.price
       : "25";
 
   const nurseExperience =
     nurse.experience !== undefined &&
-    nurse.experience !== null &&
-    nurse.experience !== ""
+      nurse.experience !== null &&
+      nurse.experience !== ""
       ? nurse.experience
       : "3";
 
@@ -219,13 +219,13 @@ export default function NurseDetailsPage() {
     nurse.categories && nurse.categories.length > 0
       ? nurse.categories
       : [
-          "Elderly Care",
-          "Post-Surgery Recovery",
-          "Medication Support",
-          "Vital Signs Monitoring",
-          "Wound Care",
-          "Home Nursing",
-        ];
+        "Elderly Care",
+        "Post-Surgery Recovery",
+        "Medication Support",
+        "Vital Signs Monitoring",
+        "Wound Care",
+        "Home Nursing",
+      ];
 
   const bookingTargetId = nurse.nurse_id || nurse.id;
 
@@ -267,7 +267,7 @@ export default function NurseDetailsPage() {
   return (
     <main className="min-h-screen bg-[#F5FAFA]">
       <div className="mx-auto max-w-6xl px-3 py-5 sm:px-6 sm:py-7 lg:px-8">
-        
+
         {/* Breadcrumb */}
         <div className="mb-5 flex flex-wrap items-center gap-2 text-[10px] text-slate-400">
           <Link
@@ -408,7 +408,7 @@ export default function NurseDetailsPage() {
 
           {/* RIGHT MAIN CONTENT */}
           <section className="min-w-0 space-y-4">
-            
+
             {/* ABOUT */}
             <div className="rounded-md border-2 border-slate-200 bg-white p-4 shadow-sm sm:p-5">
               <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
@@ -678,11 +678,11 @@ export default function NurseDetailsPage() {
                   {reviewsList.map((rev) => {
                     const initials = rev.patient_name
                       ? rev.patient_name
-                          .split(" ")
-                          .map((n) => n[0])
-                          .join("")
-                          .substring(0, 2)
-                          .toUpperCase()
+                        .split(" ")
+                        .map((n) => n[0])
+                        .join("")
+                        .substring(0, 2)
+                        .toUpperCase()
                       : "P";
 
                     return (
