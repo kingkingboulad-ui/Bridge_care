@@ -1,4 +1,6 @@
 import express from "express";
+import http from "http"; 
+import { Server } from "socket.io"; 
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import cors from "cors";
@@ -14,18 +16,55 @@ import aiCareRoutes from "./router/aiCareRoutes.js";
 import adminRoutes from "./router/adminRoutes.js";
 import nurseSearchRoutes from "./router/nurseSearchRoutes.js";
 import settingsRoutes from "./router/settings.routes.js";
-
-// NEW: Contact
-import contactRoutes from './router/contactRoutes.js';
-
-
+import contactRoutes from "./router/contactRoutes.js";
+import notificationRoutes from "./router/notificationRoutes.js";
 dotenv.config();
 
 const app = express();
+const PORT = process.env.PORT ;
 
-const PORT = process.env.PORT || 4000;
+const server = http.createServer(app);
 
-// Middleware
+
+export const io = new Server(server, {
+  cors: {
+    origin: "http://localhost:3000", 
+    methods: ["GET", "POST", "PATCH", "DELETE", "PUT"],
+    credentials: true,
+  },
+});
+
+
+io.on("connection", (socket) => {
+  console.log(`⚡ Socket connected: ${socket.id}`);
+
+
+  socket.on("join", ({ userId, role, nurseProfileId }) => {
+    // غرفة خاصة بالمستخدم حسب ID حسابه
+    if (userId) {
+      socket.join(`user_${userId}`);
+      console.log(`User ${userId} joined room: user_${userId}`);
+    }
+
+   
+    if (role === "admin") {
+      socket.join("admins_room");
+      console.log(`Admin joined room: admins_room`);
+    }
+
+
+    if (nurseProfileId) {
+      socket.join(`nurse_${nurseProfileId}`);
+      console.log(`Nurse ${nurseProfileId} joined room: nurse_${nurseProfileId}`);
+    }
+  });
+
+  socket.on("disconnect", () => {
+    console.log(`❌ Socket disconnected: ${socket.id}`);
+  });
+});
+
+// Middlewares
 app.use(express.json());
 app.use(cookieParser());
 
@@ -48,11 +87,12 @@ app.use("/api/auth", authRoutes);
 app.use("/api", bookingRoutes);
 app.use("/api/ai", aiCareRoutes);
 app.use("/api/admin", adminRoutes);
-
-// NEW: Contact Us
-app.use('/api/contact', contactRoutes);
+app.use("/api/contact", contactRoutes);
 app.use("/api/settings", settingsRoutes);
-// Start server
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+
+app.use("/api/notifications", notificationRoutes);
+server.listen(PORT, () => {
+  console.log(`Server is running with WebSockets on port ${PORT}`);
 });
+
+export default app;

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 30, 2026 at 12:40 PM
+-- Generation Time: Oct 01, 2026 at 01:43 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -52,9 +52,10 @@ INSERT INTO `care_requests` (`id`, `user_id`, `preferred_nurse_id`, `care_for`, 
 (4, 37, 61, 'Spouse / Partner', 'Post-Surgery Care', '2027-02-08', '8-hours', 'ببنين', 34.50975610, 35.98909800, 'bonjour 2', 'pending', '2026-09-20 10:27:20'),
 (6, 37, NULL, 'Person with disability', 'Mobility Assistance', '2028-02-03', '4-hours', 'حرار', 34.45717670, 36.12218020, 'sdfsdfsdfsfsf', 'pending', '2026-09-20 16:32:49'),
 (7, 2, 76, 'Myself', 'Medication Support', '2027-02-04', '1-hour', 'حرار', 34.45717670, 36.12218020, 'bonjour', 'pending', '2026-09-23 09:58:20'),
-(8, 37, 77, 'شخص من ذوي الإعاقة', 'المساعدة في الأدوية', '2026-02-02', '2-hours', 'اكروم', 34.54412850, 36.36365320, 'bonjour', 'pending', '2026-09-25 08:10:29'),
+(8, 37, NULL, 'شخص من ذوي الإعاقة', 'المساعدة في الأدوية', '2026-02-02', '2-hours', 'اكروم', 34.54412850, 36.36365320, 'bonjour', 'pending', '2026-09-25 08:10:29'),
 (9, 37, 76, 'أحد الوالدين', 'المساعدة على الحركة', '2026-02-03', '4-hours', 'حرار', 34.45717670, 36.12218020, 'مرحبا', 'pending', '2026-09-25 08:38:14'),
-(10, 2, 77, 'Spouse / Partner', 'Elderly Care', '2027-02-26', '2-hours', 'حرار', 34.45717670, 36.12218020, 'koijijijio', 'pending', '2026-09-25 11:39:38');
+(10, 2, NULL, 'Spouse / Partner', 'Elderly Care', '2027-02-26', '2-hours', 'حرار', 34.45717670, 36.12218020, 'koijijijio', 'pending', '2026-09-25 11:39:38'),
+(11, 37, 76, 'Myself', 'Daily Assistance', '2026-02-02', '1-hour', 'حرار', 34.45717670, 36.12218020, 'this test', 'completed', '2026-10-01 09:45:57');
 
 -- --------------------------------------------------------
 
@@ -74,13 +75,30 @@ CREATE TABLE `contact_messages` (
   `replied_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+-- --------------------------------------------------------
+
 --
--- Dumping data for table `contact_messages`
+-- Table structure for table `notifications`
 --
 
-INSERT INTO `contact_messages` (`id`, `name`, `email`, `subject`, `message`, `status`, `created_at`, `reply_message`, `replied_at`) VALUES
-(2, 'akil  boulad', 'akil@gmail.com', 'general', 'hi', 'read', '2026-09-28 16:45:07', NULL, NULL),
-(3, 'akil  boulad', 'akil@gmail.com', 'general', 'اه', 'unread', '2026-09-30 10:38:54', NULL, NULL);
+CREATE TABLE `notifications` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) DEFAULT NULL COMMENT 'معرف المستخدم المستلم، ويترك NULL إذا كان الإشعار موجه للأدمن',
+  `role` enum('admin','nurse','patient') NOT NULL DEFAULT 'admin' COMMENT 'الفئة المستهدفة من الإشعار',
+  `type` enum('contact','appointment','system') NOT NULL COMMENT 'نوع الإشعار',
+  `title` varchar(255) NOT NULL COMMENT 'عنوان الإشعار المختصر',
+  `message` text NOT NULL COMMENT 'نص الإشعار التفصيلي',
+  `reference_id` int(11) DEFAULT NULL COMMENT 'معرف الحجز care_requests.id أو معرف رسالة التواصل contact_messages.id',
+  `is_read` tinyint(1) NOT NULL DEFAULT 0 COMMENT '0 غير مقروء، 1 مقروء',
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `notifications`
+--
+
+INSERT INTO `notifications` (`id`, `user_id`, `role`, `type`, `title`, `message`, `reference_id`, `is_read`, `created_at`) VALUES
+(1, NULL, 'admin', 'contact', 'رسالة تواصل جديدة', 'أرسل khalil khalil رسالة جديدة بخصوص \"nurse\": يبببببببب...', 4, 1, '2026-10-01 11:36:23');
 
 -- --------------------------------------------------------
 
@@ -154,9 +172,6 @@ INSERT INTO `nurse_categories` (`id`, `nurse_id`, `category`) VALUES
 (435, 76, 'ICU Support'),
 (436, 76, 'Palliative Care'),
 (437, 76, 'Pediatric Care'),
-(438, 77, 'Elderly Care'),
-(439, 77, 'IV Therapy & Injections'),
-(440, 77, 'Pediatric Care'),
 (441, 78, 'Pediatric Care'),
 (442, 78, 'Palliative Care'),
 (443, 79, 'Palliative Care'),
@@ -213,8 +228,7 @@ INSERT INTO `nurse_profiles` (`id`, `user_id`, `specialization`, `experience`, `
 (67, 28, 'pediatric', '5-10', 'Tripoli,Abu Samra ', 'uploads/cvs/1789632141444-736483460.jpg', NULL, 'pending', '2026-09-17 08:02:21', '2026-09-17 08:02:21', 0.00, 0.00, 0),
 (68, 29, 'pediatric', '0-1', 'Tripoli,Abu Samra ', 'uploads/cvs/1789632250866-221387732.png', NULL, 'pending', '2026-09-17 08:04:10', '2026-09-17 08:04:10', 0.00, 0.00, 0),
 (69, 30, 'pediatric', '1-3', 'tripoli', 'uploads/cvs/1789636240159-967824817.png', NULL, 'pending', '2026-09-17 09:10:40', '2026-09-17 09:10:40', 0.00, 0.00, 0),
-(76, 42, 'pediatric', '1-3', 'bbnin', '/uploads/cvs/1790074891613-980150822.pdf', '/uploads/imagenurses/1790158536245-248474897.jpg', 'approved', '2026-09-22 11:01:31', '2026-09-23 10:15:36', 50.00, 3.00, 1),
-(77, 43, 'general', '1-3', 'kola', '/uploads/cvs/1790322818912-777778148.pdf', '/uploads/imagenurses/1790322818908-317388307.jpg', 'approved', '2026-09-25 07:53:38', '2026-09-25 07:59:02', 56.00, 0.00, 0),
+(76, 42, 'pediatric', '1-3', 'bbnin', '/uploads/cvs/1790074891613-980150822.pdf', '/uploads/imagenurses/1790158536245-248474897.jpg', 'approved', '2026-09-22 11:01:31', '2026-10-01 10:55:44', 50.00, 2.33, 3),
 (78, 45, 'pediatric', '1-3', 'bbnin', '/uploads/cvs/1790325862346-93799870.pdf', '/uploads/imagenurses/1790325862340-424775376.jpg', 'pending', '2026-09-25 08:44:22', '2026-09-25 08:44:22', 56.00, 0.00, 0),
 (79, 46, 'pediatric', '3-5', 'kola', '/uploads/cvs/1790354983983-869415068.pdf', '/uploads/imagenurses/1790354983982-351543379.jpg', 'pending', '2026-09-25 16:49:44', '2026-09-25 16:49:44', 56.00, 0.00, 0);
 
@@ -238,7 +252,9 @@ CREATE TABLE `reviews` (
 --
 
 INSERT INTO `reviews` (`id`, `nurse_id`, `patient_id`, `rating`, `comment`, `created_at`) VALUES
-(5, 76, 2, 3.0, NULL, '2026-09-22 11:05:41');
+(5, 76, 2, 3.0, NULL, '2026-09-22 11:05:41'),
+(6, 76, 37, 3.0, 'good', '2026-10-01 10:01:08'),
+(7, 76, 37, 1.0, 'not good', '2026-10-01 10:55:44');
 
 -- --------------------------------------------------------
 
@@ -326,7 +342,8 @@ INSERT INTO `users` (`id`, `first_name`, `last_name`, `email`, `password`, `phon
 (43, 'noura', 'boulad', 'noura@gmail.com', '$2b$10$TRAOveKGyeaZHmz.HmYuEeQrlww5Je1Q0IVJl28LxWBN0Niv65clm', '7698611', 'nurse', '2026-09-25 07:51:55', '2026-09-25 07:59:02', NULL, NULL),
 (44, 'razan', 'haasoun', 'roro@gmail.com', '$2b$10$fGu/1lYmgEmkjoh/Cla.WeqGiH9aoxftp16XCgnYcEJhIWZ9VeawG', NULL, 'admin', '2026-09-25 08:32:59', '2026-09-25 08:35:40', NULL, NULL),
 (45, 'houda', 'sarag', 'houda@gmail.com', '$2b$10$wy2YN0Z1XlWaZ3jaSnB5g.Zbu7Kvk36dAND3zli5y4iragW7Pl5oy', '123456789', 'patient', '2026-09-25 08:43:24', '2026-09-25 08:43:24', NULL, NULL),
-(46, 'abdo', 'abdo', 'abdo@gmail.com', '$2b$10$pT6SxtRWXn2IGi5Sf3zEqOZTNkB0Iz9qAk8EsJ1BAmDXXao2Sz342', '76986611', 'nurse', '2026-09-25 16:49:44', '2026-09-25 16:49:44', NULL, NULL);
+(46, 'abdo', 'abdo', 'abdo@gmail.com', '$2b$10$pT6SxtRWXn2IGi5Sf3zEqOZTNkB0Iz9qAk8EsJ1BAmDXXao2Sz342', '76986611', 'nurse', '2026-09-25 16:49:44', '2026-09-25 16:49:44', NULL, NULL),
+(47, 'boulad', 'boulad', 'boulad@gmail.com', '$2b$10$rlzr4k32TgKT4bS7YOxLqeizbcVNACJrzKSVHwpDzcAyVaoXiux.a', NULL, 'admin', '2026-10-01 11:42:21', '2026-10-01 11:42:21', NULL, NULL);
 
 --
 -- Indexes for dumped tables
@@ -345,6 +362,14 @@ ALTER TABLE `care_requests`
 --
 ALTER TABLE `contact_messages`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `notifications`
+--
+ALTER TABLE `notifications`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_notifications_user` (`user_id`),
+  ADD KEY `idx_role_unread` (`role`,`is_read`);
 
 --
 -- Indexes for table `nurse_categories`
@@ -389,13 +414,19 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `care_requests`
 --
 ALTER TABLE `care_requests`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `contact_messages`
 --
 ALTER TABLE `contact_messages`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT for table `notifications`
+--
+ALTER TABLE `notifications`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `nurse_categories`
@@ -413,13 +444,13 @@ ALTER TABLE `nurse_profiles`
 -- AUTO_INCREMENT for table `reviews`
 --
 ALTER TABLE `reviews`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
 
 --
 -- Constraints for dumped tables
@@ -431,6 +462,12 @@ ALTER TABLE `users`
 ALTER TABLE `care_requests`
   ADD CONSTRAINT `fk_care_requests_nurse` FOREIGN KEY (`preferred_nurse_id`) REFERENCES `nurse_profiles` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_care_requests_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `notifications`
+--
+ALTER TABLE `notifications`
+  ADD CONSTRAINT `fk_notifications_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `nurse_categories`

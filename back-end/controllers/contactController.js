@@ -1,7 +1,7 @@
 // controllers/contactController.js
 import nodemailer from 'nodemailer';
 import pool from '../config/DBConnect.js';
-
+import { io } from "../server.js";
 
 
 const transporter = nodemailer.createTransport({
@@ -13,50 +13,76 @@ const transporter = nodemailer.createTransport({
   });
 
 export const handleContactMessage = async (req, res) => {
+  const connection = await pool.getConnection();
+
   try {
     const { name, email, subject, message } = req.body;
 
-    // 1. التحقق من وجود الحقول المطلوبة
+    // 1. التحقق من الحقول المطلوبة
     if (!name || !email || !message) {
       return res.status(400).json({
         success: false,
-        message: 'Please provide name, email, and message.',
+        message: "Name, email, and message are required.",
       });
     }
 
-    // 2. التحقق من صيغة البريد الإلكتروني
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      return res.status(400).json({
-        success: false,
-        message: 'Invalid email address format.',
-      });
-    }
+    await connection.beginTransaction();
 
-    // 3. إدخال البيانات في جدول MySQL
-    const query = `
-      INSERT INTO contact_messages (name, email, subject, message)
-      VALUES (?, ?, ?, ?)
-    `;
+    // 2. حفظ الرسالة في جدول contact_messages
+    const [contactResult] = await connection.execute(
+      `INSERT INTO contact_messages (name, email, subject, message, status) 
+       VALUES (?, ?, ?, ?, 'unread')`,
+      [name.trim(), email.trim().toLowerCase(), subject || "general", message.trim()]
+    );
 
-    const [result] = await pool.execute(query, [
-      name.trim(),
-      email.trim().toLowerCase(),
-      subject || 'general',
-      message.trim(),
-    ]);
+    const messageId = contactResult.insertId;
+
+    // 3. تجهيز بيانات الإشعار
+    const notifTitle = "رسالة تواصل جديدة";
+    const notifMessage = `أرسل ${name} رسالة جديدة بخصوص "${subject || 'عام'}": ${message.substring(0, 60)}...`;
+
+    // 4. حفظ الإشعار في جدول notifications
+    const [notifResult] = await connection.execute(
+      `INSERT INTO notifications (user_id, role, type, title, message, reference_id, is_read) 
+       VALUES (NULL, 'admin', 'contact', ?, ?, ?, 0)`,
+      [notifTitle, notifMessage, messageId]
+    );
+
+    await connection.commit();
+
+    // 5. إرسال الإشعار اللحظي عبر Socket.IO لغرفة الأدمن
+    const realTimeNotification = {
+      id: notifResult.insertId,
+      type: "contact",
+      role: "admin",
+      title: notifTitle,
+      message: notifMessage,
+      reference_id: messageId,
+      is_read: 0,
+      created_at: new Date(),
+      data: {
+        name,
+        email,
+        subject: subject || "general",
+      },
+    };
+
+    io.to("admins_room").emit("new_notification", realTimeNotification);
 
     return res.status(201).json({
       success: true,
-      message: 'Message sent and stored successfully.',
-      messageId: result.insertId,
+      message: "Message sent successfully and admin notified.",
+      messageId,
     });
   } catch (error) {
-    console.error('Database error in contactController:', error);
+    await connection.rollback();
+    console.error("Error sending contact message:", error);
     return res.status(500).json({
       success: false,
-      message: 'Internal server error. Could not save message.',
+      message: "Server error sending message.",
     });
+  } finally {
+    connection.release();
   }
 };
 

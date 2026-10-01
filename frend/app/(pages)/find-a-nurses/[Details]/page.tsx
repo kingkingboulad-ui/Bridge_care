@@ -14,10 +14,20 @@ import {
   CalendarDays,
   Award,
   CheckCircle2,
+  MessageSquare,
 } from "lucide-react";
+
+interface ReviewItem {
+  id: number;
+  rating: number | string;
+  comment?: string | null;
+  created_at: string;
+  patient_name: string;
+}
 
 interface Nurse {
   id: number | string;
+  nurse_id?: number | string;
   user_id?: number | string;
 
   name?: string;
@@ -45,6 +55,8 @@ interface Nurse {
   bio?: string;
   about?: string;
   description?: string;
+
+  reviews_list?: ReviewItem[];
 }
 
 export default function NurseDetailsPage() {
@@ -142,8 +154,7 @@ export default function NurseDetailsPage() {
             </h1>
 
             <p className="mt-2 text-sm text-slate-500">
-              {error ||
-                "We could not find the nurse you are looking for."}
+              {error || "We could not find the nurse you are looking for."}
             </p>
 
             <Link
@@ -173,7 +184,6 @@ export default function NurseDetailsPage() {
     nurse.specialization ||
     "Registered Nurse";
 
-  // معالجة رابط الصورة سواء كان image أو photo ومعالجة مسار السيرفر localhost
   const rawImage = nurse.image || nurse.photo;
   const nurseImage = rawImage
     ? rawImage.startsWith("http")
@@ -195,8 +205,9 @@ export default function NurseDetailsPage() {
       ? nurse.experience
       : "3";
 
-  const nurseRating = nurse.rating ?? "4.9";
-  const nurseReviews = nurse.reviews ?? "12";
+  const reviewsList = Array.isArray(nurse.reviews_list) ? nurse.reviews_list : [];
+  const nurseRating = nurse.rating !== undefined && nurse.rating !== null ? nurse.rating : "0.0";
+  const nurseReviewsCount = nurse.reviews ?? reviewsList.length;
 
   const nurseAbout =
     nurse.bio ||
@@ -215,6 +226,8 @@ export default function NurseDetailsPage() {
           "Wound Care",
           "Home Nursing",
         ];
+
+  const bookingTargetId = nurse.nurse_id || nurse.id;
 
   /* =========================
       AVAILABILITY
@@ -253,15 +266,9 @@ export default function NurseDetailsPage() {
 
   return (
     <main className="min-h-screen bg-[#F5FAFA]">
-
-      {/* ==================================================
-          PAGE
-      ================================================== */}
-
       <div className="mx-auto max-w-6xl px-3 py-5 sm:px-6 sm:py-7 lg:px-8">
-
+        
         {/* Breadcrumb */}
-
         <div className="mb-5 flex flex-wrap items-center gap-2 text-[10px] text-slate-400">
           <Link
             href="/find-a-nurses"
@@ -269,30 +276,19 @@ export default function NurseDetailsPage() {
           >
             Find a Nurse
           </Link>
-
           <span>/</span>
-
           <span className="text-slate-500">
             Nurse Profile
           </span>
         </div>
 
-        {/* ==================================================
-            MAIN GRID
-        ================================================== */}
-
+        {/* MAIN GRID */}
         <div className="grid items-start gap-5 lg:grid-cols-[270px_minmax(0,1fr)]">
 
-          {/* ==================================================
-              LEFT
-          ================================================== */}
-
+          {/* LEFT SIDEBAR */}
           <aside className="overflow-hidden rounded-md border-2 border-slate-200 bg-white shadow-sm">
-
             {/* IMAGE */}
-
             <div className="relative h-[230px] w-full overflow-hidden bg-slate-100 sm:h-[250px] lg:h-[190px]">
-
               <Image
                 src={nurseImage}
                 alt={nurseName}
@@ -306,13 +302,10 @@ export default function NurseDetailsPage() {
                 <ShieldCheck size={11} />
                 Verified Nurse
               </div>
-
             </div>
 
-            {/* PROFILE */}
-
+            {/* PROFILE META */}
             <div className="p-4 sm:p-5 lg:p-4">
-
               <h2 className="text-base font-bold text-slate-900">
                 {nurseName}
               </h2>
@@ -326,23 +319,16 @@ export default function NurseDetailsPage() {
                   size={12}
                   className="mt-0.5 shrink-0 text-[#0d7c7b]"
                 />
-
-                <span>
-                  {nurse.location || "Lebanon"}
-                </span>
+                <span>{nurse.location || "Lebanon"}</span>
               </div>
-
-              {/* LINE */}
 
               <div className="my-4 h-[2px] bg-slate-100" />
 
               <div className="space-y-3">
-
                 <div className="flex items-center justify-between gap-3">
                   <span className="text-[10px] text-slate-400">
                     Experience
                   </span>
-
                   <span className="text-[10px] font-semibold text-slate-700">
                     {nurseExperience} years
                   </span>
@@ -352,14 +338,12 @@ export default function NurseDetailsPage() {
                   <span className="text-[10px] text-slate-400">
                     Rating
                   </span>
-
                   <span className="flex items-center gap-1 text-[10px] font-semibold text-slate-700">
                     <Star
                       size={11}
                       fill="currentColor"
                       className="text-yellow-400"
                     />
-
                     {nurseRating}
                   </span>
                 </div>
@@ -368,18 +352,15 @@ export default function NurseDetailsPage() {
                   <span className="text-[10px] text-slate-400">
                     Hourly Rate
                   </span>
-
                   <span className="text-[10px] font-semibold text-[#00535B]">
                     ${nursePrice}
                   </span>
                 </div>
-
               </div>
 
-              {/* BUTTON */}
-
+              {/* ACTION BUTTONS */}
               <Link
-                href={`/book?nurseId=${nurse.id}`}
+                href={`/book?nurseId=${bookingTargetId}`}
                 className="mt-5 flex w-full items-center justify-center rounded bg-[#00535B] px-3 py-2.5 text-[10px] font-semibold text-white transition hover:bg-[#00454c]"
               >
                 BOOK THIS NURSE
@@ -391,23 +372,17 @@ export default function NurseDetailsPage() {
               >
                 Back to Nurses
               </Link>
-
             </div>
-
-            {/* LINE */}
 
             <div className="h-[2px] bg-slate-100" />
 
             {/* CERTIFICATIONS */}
-
             <div className="bg-[#F8FCFC] p-4 sm:p-5 lg:p-4">
-
               <h3 className="text-[10px] font-bold text-slate-700">
                 Certifications
               </h3>
 
               <div className="mt-3 space-y-2.5">
-
                 {[
                   "Registered Nurse License",
                   "CPR & First Aid Certified",
@@ -422,35 +397,23 @@ export default function NurseDetailsPage() {
                       size={11}
                       className="mt-0.5 shrink-0 text-[#0d7c7b]"
                     />
-
                     <span className="text-[9px] leading-4 text-slate-500">
                       {item}
                     </span>
                   </div>
                 ))}
-
               </div>
-
             </div>
-
           </aside>
 
-          {/* ==================================================
-              RIGHT
-          ================================================== */}
-
+          {/* RIGHT MAIN CONTENT */}
           <section className="min-w-0 space-y-4">
-
+            
             {/* ABOUT */}
-
             <div className="rounded-md border-2 border-slate-200 bg-white p-4 shadow-sm sm:p-5">
-
               <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-
                 <div className="min-w-0">
-
                   <div className="flex flex-wrap items-center gap-2">
-
                     <h1 className="text-xl font-bold text-slate-900 sm:text-2xl">
                       About {nurseName}
                     </h1>
@@ -459,43 +422,30 @@ export default function NurseDetailsPage() {
                       <ShieldCheck size={10} />
                       Verified
                     </span>
-
                   </div>
 
                   <p className="mt-1 text-[10px] text-slate-400 sm:text-[11px]">
                     {nurseRole}
                   </p>
-
                 </div>
 
                 <div className="shrink-0 rounded-lg bg-[#E6F4F1] px-4 py-2.5 sm:text-right">
-
                   <p className="text-lg font-bold text-[#00535B]">
                     ${nursePrice}
                   </p>
-
-                  <p className="text-[8px] text-slate-400">
-                    per hour
-                  </p>
-
+                  <p className="text-[8px] text-slate-400">per hour</p>
                 </div>
-
               </div>
-
-              {/* LINE */}
 
               <div className="my-4 h-[2px] bg-slate-100" />
 
               <p className="text-[10px] leading-6 text-slate-600 sm:text-[11px]">
                 {nurseAbout}
               </p>
-
             </div>
 
             {/* SPECIALIZATIONS */}
-
             <div className="rounded-md border-2 border-slate-200 bg-white p-4 shadow-sm sm:p-5">
-
               <h2 className="text-sm font-bold text-slate-800">
                 Specializations
               </h2>
@@ -503,7 +453,6 @@ export default function NurseDetailsPage() {
               <div className="my-3 h-[2px] bg-slate-100" />
 
               <div className="flex flex-wrap gap-2">
-
                 {categories.map((category, index) => (
                   <span
                     key={`${category}-${index}`}
@@ -512,42 +461,32 @@ export default function NurseDetailsPage() {
                     {category}
                   </span>
                 ))}
-
               </div>
-
             </div>
 
             {/* EXPERIENCE / SKILLS */}
-
             <div className="grid gap-4 sm:grid-cols-2">
-
               <div className="rounded-md border-2 border-slate-200 bg-white p-4 shadow-sm sm:p-5">
-
                 <div className="flex items-center gap-3">
-
                   <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-[#E6F4F1]">
                     <Briefcase
                       size={17}
                       className="text-[#00535B]"
                     />
                   </div>
-
                   <div>
                     <p className="text-[9px] text-slate-400">
                       Professional Experience
                     </p>
-
                     <p className="mt-0.5 text-xs font-bold text-slate-800">
                       {nurseExperience} Years
                     </p>
                   </div>
-
                 </div>
 
                 <div className="my-4 h-[2px] bg-slate-100" />
 
                 <div className="space-y-2.5">
-
                   {[
                     "Patient-centered care",
                     "Home healthcare experience",
@@ -561,42 +500,33 @@ export default function NurseDetailsPage() {
                         size={11}
                         className="shrink-0 text-[#0d7c7b]"
                       />
-
                       {item}
                     </div>
                   ))}
-
                 </div>
-
               </div>
 
               <div className="rounded-md border-2 border-slate-200 bg-white p-4 shadow-sm sm:p-5">
-
                 <div className="flex items-center gap-3">
-
                   <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-[#E6F4F1]">
                     <Award
                       size={17}
                       className="text-[#00535B]"
                     />
                   </div>
-
                   <div>
                     <p className="text-[9px] text-slate-400">
                       Professional Skills
                     </p>
-
                     <p className="mt-0.5 text-xs font-bold text-slate-800">
                       Home Care Specialist
                     </p>
                   </div>
-
                 </div>
 
                 <div className="my-4 h-[2px] bg-slate-100" />
 
                 <div className="flex flex-wrap gap-2">
-
                   {[
                     "Patient Care",
                     "First Aid",
@@ -610,62 +540,43 @@ export default function NurseDetailsPage() {
                       {skill}
                     </span>
                   ))}
-
                 </div>
-
               </div>
-
             </div>
 
-            {/* ==================================================
-                AVAILABILITY
-            ================================================== */}
-
+            {/* AVAILABILITY */}
             <div className="rounded-md border-2 border-slate-200 bg-white p-4 shadow-sm sm:p-5">
-
               <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-
                 <div className="flex items-center gap-2">
-
                   <CalendarDays
                     size={16}
                     className="text-[#00535B]"
                   />
-
                   <h2 className="text-sm font-bold text-slate-800">
                     Availability This Week
                   </h2>
-
                 </div>
 
                 <span className="text-[8px] text-slate-400">
                   Available for booking
                 </span>
-
               </div>
-
-              {/* LINE */}
 
               <div className="my-4 h-[2px] bg-slate-100" />
 
-              {/* DESKTOP / TABLET */}
-
+              {/* DESKTOP */}
               <div className="hidden overflow-x-auto md:block">
-
                 <div className="grid min-w-[700px] grid-cols-7 gap-2">
-
                   {availability.map((item) => (
                     <div
                       key={item.day}
                       className="min-h-[105px] rounded border-2 border-slate-100 bg-[#FAFCFC] p-2"
                     >
-
                       <p className="border-b border-slate-100 pb-2 text-center text-[9px] font-bold text-slate-600">
                         {item.day}
                       </p>
 
                       <div className="mt-2 space-y-1.5">
-
                         {item.times.length > 0 ? (
                           item.times.map((time) => (
                             <div
@@ -682,34 +593,25 @@ export default function NurseDetailsPage() {
                             Off
                           </p>
                         )}
-
                       </div>
-
                     </div>
                   ))}
-
                 </div>
-
               </div>
 
               {/* MOBILE */}
-
               <div className="grid grid-cols-1 gap-2 md:hidden">
-
                 {availability.map((item) => (
                   <div
                     key={item.day}
                     className="rounded border-2 border-slate-100 bg-[#FAFCFC] p-3"
                   >
-
                     <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-
                       <p className="text-[10px] font-bold text-slate-700">
                         {item.day}
                       </p>
 
                       <div className="flex flex-wrap gap-1.5">
-
                         {item.times.length > 0 ? (
                           item.times.map((time) => (
                             <span
@@ -724,224 +626,150 @@ export default function NurseDetailsPage() {
                             Not available
                           </span>
                         )}
-
                       </div>
-
                     </div>
-
                   </div>
                 ))}
-
               </div>
-
             </div>
 
             {/* ==================================================
-                REVIEWS
+                REVIEWS & FEEDBACK FROM DATABASE
             ================================================== */}
-
             <div className="rounded-md border-2 border-slate-200 bg-white p-4 shadow-sm sm:p-5">
-
               <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-
-                <h2 className="text-sm font-bold text-slate-800">
-                  Patient Reviews
-                </h2>
+                <div className="flex items-center gap-2">
+                  <Star
+                    size={16}
+                    fill="currentColor"
+                    className="text-yellow-400"
+                  />
+                  <h2 className="text-sm font-bold text-slate-800">
+                    Patient Reviews & Feedback
+                  </h2>
+                </div>
 
                 <div className="flex items-center gap-1 text-[9px] text-slate-400">
-
                   <Star
                     size={11}
                     fill="currentColor"
                     className="text-yellow-400"
                   />
-
                   <span>
-                    {nurseRating} · {nurseReviews} reviews
+                    {nurseRating} · {nurseReviewsCount} reviews
                   </span>
-
                 </div>
-
               </div>
-
-              {/* LINE */}
 
               <div className="my-4 h-[2px] bg-slate-100" />
 
-              <div className="divide-y-2 divide-slate-100">
-
-                {/* REVIEW 1 */}
-
-                <div className="py-3 first:pt-0">
-
-                  <div className="flex items-start justify-between gap-3">
-
-                    <div className="flex min-w-0 items-center gap-2">
-
-                      <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#E6F4F1] text-[8px] font-bold text-[#00535B]">
-                        SC
-                      </div>
-
-                      <div className="min-w-0">
-                        <p className="text-[9px] font-semibold text-slate-700">
-                          Sarah C.
-                        </p>
-
-                        <p className="text-[8px] text-slate-400">
-                          2 weeks ago
-                        </p>
-                      </div>
-
-                    </div>
-
-                    <div className="flex shrink-0 gap-0.5">
-                      {[1, 2, 3, 4, 5].map((i) => (
-                        <Star
-                          key={i}
-                          size={9}
-                          fill="currentColor"
-                          className="text-yellow-400"
-                        />
-                      ))}
-                    </div>
-
-                  </div>
-
-                  <p className="mt-2 pl-10 text-[9px] leading-5 text-slate-500">
-                    Very caring and professional. She was always punctual,
-                    patient and made my recovery much easier.
+              {reviewsList.length === 0 ? (
+                <div className="py-8 text-center bg-slate-50 rounded-lg">
+                  <MessageSquare
+                    size={28}
+                    className="mx-auto text-slate-300 mb-2"
+                  />
+                  <p className="text-[10px] text-slate-500 font-medium">
+                    No reviews yet for this nurse.
                   </p>
-
                 </div>
+              ) : (
+                <div className="divide-y-2 divide-slate-100">
+                  {reviewsList.map((rev) => {
+                    const initials = rev.patient_name
+                      ? rev.patient_name
+                          .split(" ")
+                          .map((n) => n[0])
+                          .join("")
+                          .substring(0, 2)
+                          .toUpperCase()
+                      : "P";
 
-                {/* REVIEW 2 */}
+                    return (
+                      <div
+                        key={rev.id}
+                        className="py-3 first:pt-0 last:pb-0"
+                      >
+                        <div className="flex items-start justify-between gap-3">
+                          <div className="flex min-w-0 items-center gap-2">
+                            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#E6F4F1] text-[8px] font-bold text-[#00535B]">
+                              {initials}
+                            </div>
 
-                <div className="py-3">
+                            <div className="min-w-0">
+                              <p className="text-[9px] font-semibold text-slate-700">
+                                {rev.patient_name || "Patient"}
+                              </p>
+                              <p className="text-[8px] text-slate-400">
+                                {new Date(rev.created_at).toLocaleDateString(
+                                  "en-US",
+                                  {
+                                    year: "numeric",
+                                    month: "short",
+                                    day: "numeric",
+                                  }
+                                )}
+                              </p>
+                            </div>
+                          </div>
 
-                  <div className="flex items-start justify-between gap-3">
+                          {/* تقييم النجوم الفعلي من قاعدة البيانات */}
+                          <div className="flex shrink-0 gap-0.5">
+                            {[1, 2, 3, 4, 5].map((starIndex) => (
+                              <Star
+                                key={starIndex}
+                                size={10}
+                                className={
+                                  starIndex <= Math.round(Number(rev.rating))
+                                    ? "text-yellow-400 fill-yellow-400"
+                                    : "text-slate-200 fill-slate-100"
+                                }
+                              />
+                            ))}
+                          </div>
+                        </div>
 
-                    <div className="flex min-w-0 items-center gap-2">
-
-                      <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#E6F4F1] text-[8px] font-bold text-[#00535B]">
-                        JM
-                      </div>
-
-                      <div>
-                        <p className="text-[9px] font-semibold text-slate-700">
-                          John M.
+                        <p className="mt-2 pl-10 text-[9px] leading-5 text-slate-500">
+                          {rev.comment ? (
+                            rev.comment
+                          ) : (
+                            <span className="italic text-slate-400">
+                              Rating without comment.
+                            </span>
+                          )}
                         </p>
-
-                        <p className="text-[8px] text-slate-400">
-                          1 month ago
-                        </p>
                       </div>
-
-                    </div>
-
-                    <div className="flex shrink-0 gap-0.5">
-                      {[1, 2, 3, 4, 5].map((i) => (
-                        <Star
-                          key={i}
-                          size={9}
-                          fill="currentColor"
-                          className="text-yellow-400"
-                        />
-                      ))}
-                    </div>
-
-                  </div>
-
-                  <p className="mt-2 pl-10 text-[9px] leading-5 text-slate-500">
-                    Excellent nurse and very knowledgeable. She took great
-                    care of my mother and communicated everything clearly.
-                  </p>
-
+                    );
+                  })}
                 </div>
-
-                {/* REVIEW 3 */}
-
-                <div className="py-3 last:pb-0">
-
-                  <div className="flex items-start justify-between gap-3">
-
-                    <div className="flex min-w-0 items-center gap-2">
-
-                      <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#E6F4F1] text-[8px] font-bold text-[#00535B]">
-                        AL
-                      </div>
-
-                      <div>
-                        <p className="text-[9px] font-semibold text-slate-700">
-                          Anna L.
-                        </p>
-
-                        <p className="text-[8px] text-slate-400">
-                          2 months ago
-                        </p>
-                      </div>
-
-                    </div>
-
-                    <div className="flex shrink-0 gap-0.5">
-                      {[1, 2, 3, 4, 5].map((i) => (
-                        <Star
-                          key={i}
-                          size={9}
-                          fill="currentColor"
-                          className="text-yellow-400"
-                        />
-                      ))}
-                    </div>
-
-                  </div>
-
-                  <p className="mt-2 pl-10 text-[9px] leading-5 text-slate-500">
-                    Professional, friendly and extremely helpful. Definitely
-                    someone I would recommend for home care.
-                  </p>
-
-                </div>
-
-              </div>
-
+              )}
             </div>
 
-            {/* ==================================================
-                BOOK CTA
-            ================================================== */}
-
+            {/* BOOK CTA */}
             <div className="rounded-md bg-[#006D77] p-4 sm:p-5">
-
               <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-
                 <div>
-
                   <h2 className="text-sm font-bold text-white sm:text-base">
                     Ready to book {nurseName}?
                   </h2>
-
                   <p className="mt-1 text-[9px] leading-4 text-white/75">
                     Choose your preferred date, time and care location.
                   </p>
-
                 </div>
 
                 <Link
-                  href={`/book?nurseId=${nurse.id}`}
+                  href={`/book?nurseId=${bookingTargetId}`}
                   className="flex w-full shrink-0 items-center justify-center gap-2 rounded bg-white px-5 py-2.5 text-[10px] font-bold text-[#00535B] sm:w-auto"
                 >
                   <CalendarDays size={13} />
                   Book This Nurse
                 </Link>
-
               </div>
-
             </div>
 
           </section>
         </div>
       </div>
-
     </main>
   );
 }

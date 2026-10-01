@@ -540,96 +540,104 @@ export const getNurses = async (req, res) => {
 ========================================================= */
 
 export const getUserProfile = async (req, res) => {
-    try {
-        const { id } = req.params;
+  try {
+    const { id } = req.params;
 
-        const [rows] = await pool.query(
-            `
-            SELECT
-                u.id,
-                u.first_name,
-                u.last_name,
-                u.email,
-                u.phone,
+    // 1. جلب بيانات الممرض والمستخدم (سواء كان الرقم الممرر هو user_id أو nurse_profiles.id)
+    const [rows] = await pool.query(
+      `
+      SELECT
+          u.id,
+          u.id AS user_id,
+          u.first_name,
+          u.last_name,
+          CONCAT(u.first_name, ' ', u.last_name) AS name,
+          CONCAT(u.first_name, ' ', u.last_name) AS fullName,
+          u.email,
+          u.phone,
 
-                np.id AS nurse_id,
-                np.user_id,
+          np.id AS nurse_id,
+          np.specialization,
+          np.specialization AS role,
+          np.experience,
+          np.image,
+          np.location,
+          np.cv_file,
+          np.status,
+          np.created_at,
+          np.updated_at,
+          np.price,
+          np.rating,
+          np.reviews
 
-                np.specialization,
-                np.experience,
+      FROM users u
+      LEFT JOIN nurse_profiles np
+          ON u.id = np.user_id
+      WHERE u.id = ? OR np.id = ?
+      LIMIT 1
+      `,
+      [id, id]
+    );
 
-                np.image,
-
-        
-                np.location,
-                np.cv_file,
-
-                np.status,
-                np.created_at,
-                np.updated_at,
-
-                np.price,
-                np.rating,
-                np.reviews
-
-            FROM users u
-
-            LEFT JOIN nurse_profiles np
-                ON u.id = np.user_id
-
-            WHERE u.id = ?
-            `,
-            [id]
-        );
-
-        if (rows.length === 0) {
-            return res.status(404).json({
-                success: false,
-                message: "Nurse not found"
-            });
-        }
-
-        const nurse = rows[0];
-
-        /* Get categories if this user is a nurse */
-        if (nurse.nurse_id) {
-
-            const [categories] = await pool.execute(
-                `
-                SELECT category
-                FROM nurse_categories
-                WHERE nurse_id = ?
-                ORDER BY id ASC
-                `,
-                [nurse.nurse_id]
-            );
-
-            nurse.categories = categories.map(
-                (item) => item.category
-            );
-
-        } else {
-            nurse.categories = [];
-        }
-
-        res.status(200).json({
-            success: true,
-            nurse
-        });
-
-    } catch (error) {
-        console.error(
-            "Get user profile error:",
-            error
-        );
-
-        res.status(500).json({
-            success: false,
-            message: "Server error"
-        });
+    if (rows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "Nurse not found",
+      });
     }
-};
 
+    const nurse = rows[0];
+
+    if (nurse.nurse_id) {
+      // 2. جلب التصنيفات
+      const [categories] = await pool.execute(
+        `
+        SELECT category
+        FROM nurse_categories
+        WHERE nurse_id = ?
+        ORDER BY id ASC
+        `,
+        [nurse.nurse_id]
+      );
+
+      nurse.categories = categories.map((item) => item.category);
+
+      // 3. جلب التقييمات والتعليقات الحقيقية مع بيانات المريض
+      const [reviewsList] = await pool.execute(
+        `
+        SELECT 
+            r.id,
+            r.rating,
+            r.comment,
+            r.created_at,
+            r.patient_id,
+            COALESCE(CONCAT(u.first_name, ' ', u.last_name), 'مريض') AS patient_name
+        FROM reviews r
+        LEFT JOIN users u ON r.patient_id = u.id
+        WHERE r.nurse_id = ?
+        ORDER BY r.created_at DESC
+        `,
+        [nurse.nurse_id]
+      );
+
+      nurse.reviews_list = reviewsList;
+    } else {
+      nurse.categories = [];
+      nurse.reviews_list = [];
+    }
+
+    return res.status(200).json({
+      success: true,
+      nurse,
+    });
+  } catch (error) {
+    console.error("Get user profile error:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Server error",
+    });
+  }
+};
 
 
 
@@ -672,7 +680,7 @@ export const getNurseBookings = async (req, res) => {
           cr.care_type,
           cr.start_date,
           cr.duration,
-          cr.address,
+          cr.address AS location,
           cr.latitude,
           cr.longitude,
           cr.notes,
