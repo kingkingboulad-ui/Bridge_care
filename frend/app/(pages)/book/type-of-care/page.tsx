@@ -222,7 +222,7 @@ export default function TypeOfCarePage() {
                 }
               />
 
-              {t("back")}
+              {t("common.back")}
             </button>
 
             {/* Continue */}
@@ -236,8 +236,7 @@ export default function TypeOfCarePage() {
                   : "cursor-not-allowed bg-gray-300 text-gray-500"
               }`}
             >
-              {t("continue")}
-
+              {t("common.continue")}
               <ArrowRight
                 size={12}
                 className={

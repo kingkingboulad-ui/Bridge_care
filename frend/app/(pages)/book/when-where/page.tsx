@@ -377,7 +377,7 @@ export default function WhenWherePage() {
               className="flex h-10 w-full items-center justify-center rounded-lg border border-gray-200 px-6 text-xs font-semibold text-gray-600 transition hover:bg-gray-50 sm:h-auto sm:w-auto sm:py-2 sm:text-sm"
             >
               {dir === "rtl" ? "→" : "←"}{" "}
-              {t("back")}
+              {t("common.back")}
             </Link>
 
             {/* Continue */}
@@ -386,7 +386,7 @@ export default function WhenWherePage() {
               onClick={handleContinue}
               className="flex h-10 w-full items-center justify-center gap-2 rounded-lg bg-[#00535B] px-7 text-xs font-semibold text-white transition hover:bg-[#006D77] sm:h-auto sm:w-auto sm:py-2 sm:text-sm"
             >
-              {t("continue")}
+              {t("common.continue")}
 
               <ArrowRight
                 size={14}

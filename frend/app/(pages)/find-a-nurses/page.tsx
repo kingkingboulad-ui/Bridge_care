@@ -32,8 +32,8 @@ function RateNurseModal({
 }: RateModalProps) {
   const { t } = useLanguage();
 
-  const [selectedRating, setSelectedRating] = useState(5);
-  const [hoveredRating, setHoveredRating] = useState(0);
+  const [selectedRating, setSelectedRating] = useState(5);//store evaluation li e5taru user
+  const [hoveredRating, setHoveredRating] = useState(0);//store la 3aded star li f2asun 
   const [comment, setComment] = useState("");
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");

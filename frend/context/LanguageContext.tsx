@@ -410,7 +410,7 @@ const translations: Record<Lang, Record<string, string>> = {
 
     threeToFiveYears: "3 - 5 years",
     experience3To5: "3 - 5 Years",
-
+"nurseDetails.noReviews": "No reviews yet for this nurse.",
     fivePlusYears: "5+ years",
     experience5Plus: "5+ Years",
 
@@ -1585,7 +1585,8 @@ logIn:
 
 nurseRegistrationError:
   "An error occurred during nurse registration. Please try again.",
-
+ 
+  selectPrimaryCareType:"Select Primary CareType",
   // =======================================================
 // LICENSE VERIFICATION
 // =======================================================
@@ -1917,7 +1918,263 @@ nurseRegistrationError:
 // English 
 backToLogin: "Back to Login", checkYourEmail: "Check Your Email", resetEmailSent: "If an account with", exists: "exists, we’ve sent a link to reset your password.", forgotPassword: "Forgot Password?", forgotPasswordDescription: "Enter your email address and we'll send you a link to reset your password.", emailAddress: "Email Address", sendResetLink: "Send Reset Link", somethingWentWrong: "Something went wrong.", failedToConnect: "Failed to connect to the server.",
 // English 
-passwordsDoNotMatch: "Passwords do not match.", passwordMinLength: "Password must be at least 6 characters long.", invalidResetLink: "Link is invalid or has expired.", failedToConnect: "Failed to connect to the server.", invalidMissingToken: "Invalid or missing reset token.", requestNewLink: "Request a new link", passwordReset: "Password Reset!", passwordResetSuccess: "Your password has been reset successfully. Redirecting to login...", setNewPassword: "Set New Password", setNewPasswordDescription: "Please enter your new password below.", newPassword: "New Password", confirmPassword: "Confirm Password", updatePassword: "Update Password", loading: "Loading...",},
+passwordsDoNotMatch: "Passwords do not match.", passwordMinLength: "Password must be at least 6 characters long.", invalidResetLink: "Link is invalid or has expired.", failedToConnect: "Failed to connect to the server.", invalidMissingToken: "Invalid or missing reset token.", requestNewLink: "Request a new link", passwordReset: "Password Reset!", passwordResetSuccess: "Your password has been reset successfully. Redirecting to login...", setNewPassword: "Set New Password", setNewPasswordDescription: "Please enter your new password below.", newPassword: "New Password", confirmPassword: "Confirm Password", updatePassword: "Update Password", loading: "Loading...",
+
+//details 
+"nurseDetails.loading":
+  "Loading nurse details.",
+
+"nurseDetails.error":
+  "Failed to load nurse details.",
+
+"nurseDetails.notFound":
+  "Nurse not found",
+
+"nurseDetails.notFoundDescription":
+  "We could not find the nurse you are looking for.",
+
+"nurseDetails.backToFindNurse":
+  "Back to Find a Nurse",
+
+"nurseDetails.backToNurses":
+  "Back to Nurses",
+
+"nurseDetails.registeredNurse":
+  "Registered Nurse",
+
+"nurseDetails.verifiedNurse":
+  "Verified Nurse",
+
+"nurseDetails.verified":
+  "Verified",
+
+"nurseDetails.professionalNurse":
+  "Professional Nurse",
+
+"nurseDetails.lebanon":
+  "Lebanon",
+
+"nurseDetails.findNurse":
+  "Find a Nurse",
+
+"nurseDetails.profile":
+  "Profile",
+
+"nurseDetails.experience":
+  "Experience",
+typeOfCare:"type of care  ",
+
+"nurseDetails.rating":
+  "Rating",
+
+"nurseDetails.hourlyRate":
+  "Hourly Rate",
+
+"nurseDetails.years":
+  "years",
+
+"nurseDetails.bookThisNurse":
+  "Book This Nurse",
+
+"nurseDetails.certifications":
+  "Certifications",
+
+"nurseDetails.certifications.registeredLicense":
+  "Registered Nursing License",
+
+"nurseDetails.certifications.cpr":
+  "CPR Certification",
+
+"nurseDetails.certifications.homeCare":
+  "Home Care Certification",
+
+"nurseDetails.certifications.patientSafety":
+  "Patient Safety Certification",
+
+"nurseDetails.aboutTitle":
+  "About the Nurse",
+
+"nurseDetails.perHour":
+  "per hour",
+
+"nurseDetails.specializations":
+  "Specializations",
+
+"nurseDetails.professionalExperience":
+  "Professional Experience",
+
+"nurseDetails.professionalSkills":
+  "Professional Skills",
+
+"nurseDetails.homeCareSpecialist":
+  "Home Care Specialist",
+
+"nurseDetails.skills.patientCare":
+  "Patient Care",
+
+"nurseDetails.skills.firstAid":
+  "First Aid",
+
+"nurseDetails.skills.vitalSigns":
+  "Vital Signs Monitoring",
+
+"nurseDetails.skills.patientCentered":
+  "Patient-Centered Care",
+
+"nurseDetails.skills.homeHealthcare":
+  "Home Healthcare",
+
+"nurseDetails.skills.medication":
+  "Medication Management",
+
+"nurseDetails.categories.elderlyCare":
+  "Elderly Care",
+
+"nurseDetails.categories.postSurgery":
+  "Post-Surgery Care",
+
+"nurseDetails.categories.medicationSupport":
+  "Medication Support",
+
+"nurseDetails.categories.vitalSignsMonitoring": "Vital Signs Monitoring",
+
+
+"nurseDetails.categories.woundCare":
+  "Wound Care",
+
+"nurseDetails.categories.homeNursing":
+  "Home Nursing",
+
+"nurseDetails.availability.title":
+  "Availability",
+
+"nurseDetails.availability.available":
+  "Available",
+
+"nurseDetails.off":
+  "OFF",
+
+"nurseDetails.notAvailable":
+  "Not Available",
+
+"nurseDetails.reviews.title":
+  "Reviews",
+
+"nurseDetails.reviews.count":
+  "Reviews",
+
+"nurseDetails.reviews.twoWeeks":
+  "2 weeks ago",
+
+"nurseDetails.reviews.oneMonth":
+  "1 month ago",
+
+"nurseDetails.reviews.twoMonths":
+  "2 months ago",
+
+"nurseDetails.reviews.review1":
+  "Very professional and friendly nurse. I am very satisfied with the care she provided.",
+
+"nurseDetails.reviews.review2":
+  "The nurse was helpful and professional, and she paid great attention to the patient's needs.",
+
+"nurseDetails.reviews.review3":
+  "Excellent experience. The nurse was kind, committed, and experienced.",
+
+"nurseDetails.cta.readyToBook":
+  "Ready to book {name}?",
+
+"nurseDetails.cta.description":
+  "Book a professional and trusted nurse to provide the care you need at home.",
+
+"nurseDetails.defaultAbout":
+  "A dedicated and compassionate nurse committed to providing high-quality and personalized care.",
+
+"nurseDetails.location":
+  "Location",
+//details 
+
+"nurseDetails.findANurse": "Find a Nurse",
+"nurseDetails.nurseProfile": "Nurse Profile",
+"nurseDetails.verifiedNurse": "Verified Nurse",
+"nurseDetails.lebanon": "Lebanon",
+"nurseDetails.experience": "Experience",
+"nurseDetails.years": "years",
+"nurseDetails.rating": "Rating",
+"nurseDetails.hourlyRate": "Hourly Rate",
+"nurseDetails.bookThisNurseUpper": "BOOK THIS NURSE",
+"nurseDetails.bookThisNurse": "Book This Nurse",
+"nurseDetails.backToNurses": "Back to Nurses",
+"nurseDetails.certifications": "Certifications",
+"nurseDetails.aboutName": "About {name}",
+"nurseDetails.verified": "Verified",
+"nurseDetails.perHour": "per hour",
+"nurseDetails.specializations": "Specializations",
+"nurseDetails.professionalExperience": "Professional Experience",
+"nurseDetails.yearsCap": "Years",
+"nurseDetails.professionalSkills": "Professional Skills",
+"nurseDetails.homeCareSpecialist": "Home Care Specialist",
+"nurseDetails.availabilityThisWeek": "Availability This Week",
+"nurseDetails.availableForBooking": "Available for booking",
+"nurseDetails.off": "Off",
+"nurseDetails.notAvailable": "Not available",
+"nurseDetails.patientReviews": "Patient Reviews",
+"nurseDetails.reviewsCount": "reviews",
+"nurseDetails.readyToBook": "Ready to book {name}?",
+"nurseDetails.readyToBookDesc": "Choose your preferred date, time and care location.",
+"nurseDetails.nurseNotFound": "Nurse not found",
+"nurseDetails.nurseNotFoundDesc": "We could not find the nurse you are looking for.",
+"nurseDetails.backToFind": "Back to Find a Nurse",
+"nurseDetails.loadError": "Failed to load nurse details.",
+"nurseDetails.nurseProfessional": "Nurse Professional",
+"nurseDetails.registeredNurse": "Registered Nurse",
+"nurseDetails.aboutDefault": "I am a dedicated and compassionate {role} committed to providing high-quality and personalized care. I focus on creating a safe, comfortable and supportive environment for every patient.",
+
+"nurseDetails.cat1": "Elderly Care",
+"nurseDetails.cat2": "Post-Surgery Recovery",
+"nurseDetails.cat3": "Medication Support",
+"nurseDetails.cat4": "Vital Signs Monitoring",
+"nurseDetails.cat5": "Wound Care",
+"nurseDetails.cat6": "Home Nursing",
+
+"nurseDetails.cert1": "Registered Nurse License",
+"nurseDetails.cert2": "CPR & First Aid Certified",
+"nurseDetails.cert3": "Home Care Training",
+"nurseDetails.cert4": "Patient Safety Certified",
+
+"nurseDetails.exp1": "Patient-centered care",
+"nurseDetails.exp2": "Home healthcare experience",
+"nurseDetails.exp3": "Medication assistance",
+
+"nurseDetails.skill1": "Patient Care",
+"nurseDetails.skill2": "First Aid",
+"nurseDetails.skill3": "Vital Signs",
+"nurseDetails.skill4": "Elderly Care",
+
+"nurseDetails.mon": "Mon",
+"nurseDetails.tue": "Tue",
+"nurseDetails.wed": "Wed",
+"nurseDetails.thu": "Thu",
+"nurseDetails.fri": "Fri",
+"nurseDetails.sat": "Sat",
+"nurseDetails.sun": "Sun",
+
+"nurseDetails.reviewInitials1": "SC",
+"nurseDetails.reviewName1": "Sarah C.",
+"nurseDetails.weeksAgo2": "2 weeks ago",
+"nurseDetails.review1": "Very caring and professional. She was always punctual, patient and made my recovery much easier.",
+
+"nurseDetails.reviewInitials2": "JM",
+"nurseDetails.reviewName2": "John M.",
+"nurseDetails.monthAgo1": "1 month ago",
+"nurseDetails.review2": "Excellent nurse and very knowledgeable. She took great care of my mother and communicated everything clearly.",
+
+"nurseDetails.reviewInitials3": "AL",
+"nurseDetails.reviewName3": "Anna L.",
+"nurseDetails.monthsAgo2": "2 months ago",
+"nurseDetails.review3": "Professional, friendly and extremely helpful. Definitely someone I would recommend for home care.",
+
+},
 
   // =========================================================
   // ARABIC
@@ -2025,7 +2282,7 @@ passwordsDoNotMatch: "Passwords do not match.", passwordMinLength: "Password mus
 
     findYourIdealCaregiver:
       "اعثر على مقدم الرعاية المثالي لك",
-
+"nurseDetails.noReviews": "لا توجد تقييمات لهذه الممرضة حتى الآن.",
     chooseCarePreferences:
       "اختر تفضيلات الرعاية الخاصة بك واعثر على المتخصص المناسب لك.",
 
@@ -2483,7 +2740,8 @@ passwordsDoNotMatch: "Passwords do not match.", passwordMinLength: "Password mus
 
     "common.continue":
       "متابعة",
-
+typeOfCare:"نوع الرعاية",
+selectPrimaryCareType:"اختر نوع الرعاية",
     // =======================================================
     // WHO NEEDS CARE
     // =======================================================
@@ -3659,12 +3917,23 @@ nurseRegistrationError:
   "الإجراءات المطلوبة",
 
   // Arabic 
-  passwordsDoNotMatch: "كلمتا المرور غير متطابقتين.", passwordMinLength: "يجب أن تتكون كلمة المرور من 6 أحرف على الأقل.", invalidResetLink: "الرابط غير صالح أو انتهت صلاحيته.", failedToConnect: "تعذر الاتصال بالخادم.", invalidMissingToken: "رمز إعادة التعيين غير صالح أو مفقود.", requestNewLink: "طلب رابط جديد", passwordReset: "تمت إعادة تعيين كلمة المرور!", passwordResetSuccess: "تمت إعادة تعيين كلمة المرور بنجاح. سيتم تحويلك إلى صفحة تسجيل الدخول...", setNewPassword: "تعيين كلمة مرور جديدة", setNewPasswordDescription: "يرجى إدخال كلمة المرور الجديدة أدناه.", newPassword: "كلمة المرور الجديدة", confirmPassword: "تأكيد كلمة المرور", updatePassword: "تحديث كلمة المرور", loading: "جارٍ التحميل...",
-"licenseVerification.applicationSubmitted":
-  "تم إرسال الطلب",
+  passwordsDoNotMatch: "كلمتا المرور غير متطابقتين.",
+   passwordMinLength: "يجب أن تتكون كلمة المرور من 6 أحرف على الأقل.",
+    invalidResetLink: "الرابط غير صالح أو انتهت صلاحيته.", 
+	failedToConnect: "تعذر الاتصال بالخادم.", 
+	invalidMissingToken: "رمز إعادة التعيين غير صالح أو مفقود.", 
+	requestNewLink: "طلب رابط جديد",
+	 passwordReset: "تمت إعادة تعيين كلمة المرور!",
+	  passwordResetSuccess: "تمت إعادة تعيين كلمة المرور بنجاح. سيتم تحويلك إلى صفحة تسجيل الدخول...",
+	   setNewPassword: "تعيين كلمة مرور جديدة", 
+	   setNewPasswordDescription: "يرجى إدخال كلمة المرور الجديدة أدناه.", 
+	   newPassword: "كلمة المرور الجديدة",
+	    confirmPassword: "تأكيد كلمة المرور", 
+		updatePassword: "تحديث كلمة المرور",
+		 loading: "جارٍ التحميل...",
+"licenseVerification.applicationSubmitted": "تم إرسال الطلب",
 
-"licenseVerification.noActionRequired":
-  "لا يلزم اتخاذ أي إجراء منك في هذه المرحلة. سيقوم فريقنا بمراجعة المستندات التي أرسلتها.",
+"licenseVerification.noActionRequired": "لا يلزم اتخاذ أي إجراء منك في هذه المرحلة. سيقوم فريقنا بمراجعة المستندات التي أرسلتها.",
 
 "licenseVerification.nextStep":
   "الخطوة التالية",
@@ -3799,6 +4068,7 @@ nurseRegistrationError:
 "nurse.accepted": "مقبول",
 "nurse.rejected": "مرفوض",
 "nurse.completed": "مكتمل",
+profile:" الملف الشخصي",
 
 "nurse.failedUpdateStatus": "تعذر تحديث حالة الحجز.",
 "nurse.confirmDelete": "هل أنت متأكد أنك تريد حذف هذا الحجز؟",
@@ -3854,7 +4124,7 @@ nurseRegistrationError:
 "nurse.manageBookings": "إدارة حجوزات وطلبات المرضى.",
 "nurse.total": "الإجمالي",
 "nurse.noBookings": "لا توجد حجوزات للمرضى حتى الآن.",
-
+book:"احجز",
 "nurse.request": "الطلب",
 "nurse.bookedOn": "تم الحجز بتاريخ",
 
@@ -3909,7 +4179,99 @@ nurseRegistrationError:
 "patientProfile.specialNotes": "ملاحظات خاصة",
 
 // Arabic 
-backToLogin: "العودة إلى تسجيل الدخول", checkYourEmail: "تحقق من بريدك الإلكتروني", resetEmailSent: "إذا كان هناك حساب مرتبط بالبريد", exists: "فقد أرسلنا رابطًا لإعادة تعيين كلمة المرور.", forgotPassword: "هل نسيت كلمة المرور؟", forgotPasswordDescription: "أدخل بريدك الإلكتروني وسنرسل لك رابطًا لإعادة تعيين كلمة المرور.", emailAddress: "البريد الإلكتروني", sendResetLink: "إرسال رابط إعادة التعيين", somethingWentWrong: "حدث خطأ ما.", failedToConnect: "تعذر الاتصال بالخادم.",
+backToLogin: "العودة إلى تسجيل الدخول", 
+checkYourEmail: "تحقق من بريدك الإلكتروني", 
+resetEmailSent: "إذا كان هناك حساب مرتبط بالبريد",
+ exists: "فقد أرسلنا رابطًا لإعادة تعيين كلمة المرور.", 
+ forgotPassword: "هل نسيت كلمة المرور؟",
+  forgotPasswordDescription: "أدخل بريدك الإلكتروني وسنرسل لك رابطًا لإعادة تعيين كلمة المرور.",
+   emailAddress: "البريد الإلكتروني", 
+   sendResetLink: "إرسال رابط إعادة التعيين", 
+   somethingWentWrong: "حدث خطأ ما.", 
+   failedToConnect: "تعذر الاتصال بالخادم.",
+
+//details 
+
+"nurseDetails.findANurse": "ابحث عن ممرضة",
+"nurseDetails.nurseProfile": "ملف الممرضة",
+"nurseDetails.verifiedNurse": "ممرضة موثقة",
+"nurseDetails.lebanon": "لبنان",
+"nurseDetails.experience": "الخبرة",
+"nurseDetails.years": "سنوات",
+"nurseDetails.rating": "التقييم",
+"nurseDetails.hourlyRate": "السعر بالساعة",
+"nurseDetails.bookThisNurseUpper": "احجز هذه الممرضة",
+"nurseDetails.bookThisNurse": "احجز هذه الممرضة",
+"nurseDetails.backToNurses": "العودة إلى الممرضات",
+"nurseDetails.certifications": "الشهادات",
+"nurseDetails.aboutName": "عن {name}",
+"nurseDetails.verified": "موثقة",
+"nurseDetails.perHour": "في الساعة",
+"nurseDetails.specializations": "التخصصات",
+"nurseDetails.professionalExperience": "الخبرة المهنية",
+"nurseDetails.yearsCap": "سنوات",
+"nurseDetails.professionalSkills": "المهارات المهنية",
+"nurseDetails.homeCareSpecialist": "متخصصة في الرعاية المنزلية",
+"nurseDetails.availabilityThisWeek": "التوفر هذا الأسبوع",
+"nurseDetails.availableForBooking": "متاحة للحجز",
+"nurseDetails.off": "إجازة",
+"nurseDetails.notAvailable": "غير متاحة",
+"nurseDetails.patientReviews": "تقييمات المرضى",
+"nurseDetails.reviewsCount": "تقييمات",
+"nurseDetails.readyToBook": "هل أنت مستعد لحجز {name}؟",
+"nurseDetails.readyToBookDesc": "اختر التاريخ والوقت وموقع الرعاية المفضل لديك.",
+"nurseDetails.nurseNotFound": "الممرضة غير موجودة",
+"nurseDetails.nurseNotFoundDesc": "لم نتمكن من العثور على الممرضة التي تبحث عنها.",
+"nurseDetails.backToFind": "العودة إلى البحث عن ممرضة",
+"nurseDetails.loadError": "فشل تحميل تفاصيل الممرضة.",
+"nurseDetails.nurseProfessional": "ممرضة محترفة",
+"nurseDetails.registeredNurse": "ممرضة مسجلة",
+"nurseDetails.aboutDefault": "أنا {role} ملتزمة ومتعاطفة، أحرص على تقديم رعاية عالية الجودة ومخصصة. أركز على توفير بيئة آمنة ومريحة وداعمة لكل مريض.",
+
+"nurseDetails.cat1": "رعاية المسنين",
+"nurseDetails.cat2": "التعافي بعد الجراحة",
+"nurseDetails.cat3": "المساعدة في تناول الأدوية",
+"nurseDetails.cat4": "مراقبة العلامات الحيوية",
+"nurseDetails.cat5": "العناية بالجروح",
+"nurseDetails.cat6": "التمريض المنزلي",
+
+"nurseDetails.cert1": "ترخيص ممرضة مسجلة",
+"nurseDetails.cert2": "معتمدة في الإنعاش القلبي والإسعافات الأولية",
+"nurseDetails.cert3": "تدريب على الرعاية المنزلية",
+"nurseDetails.cert4": "معتمدة في سلامة المرضى",
+
+"nurseDetails.exp1": "رعاية تتمحور حول المريض",
+"nurseDetails.exp2": "خبرة في الرعاية الصحية المنزلية",
+"nurseDetails.exp3": "المساعدة في تناول الأدوية",
+
+"nurseDetails.skill1": "رعاية المرضى",
+"nurseDetails.skill2": "الإسعافات الأولية",
+"nurseDetails.skill3": "العلامات الحيوية",
+"nurseDetails.skill4": "رعاية المسنين",
+
+"nurseDetails.mon": "الإثنين",
+"nurseDetails.tue": "الثلاثاء",
+"nurseDetails.wed": "الأربعاء",
+"nurseDetails.thu": "الخميس",
+"nurseDetails.fri": "الجمعة",
+"nurseDetails.sat": "السبت",
+"nurseDetails.sun": "الأحد",
+
+"nurseDetails.reviewInitials1": "سم",
+"nurseDetails.reviewName1": "سارة م.",
+"nurseDetails.weeksAgo2": "منذ أسبوعين",
+"nurseDetails.review1": "ممرضة مهتمة ومحترفة جدًا. كانت دائمًا ملتزمة بالمواعيد وصبورة، وساعدتني كثيرًا في فترة التعافي.",
+
+"nurseDetails.reviewInitials2": "جم",
+"nurseDetails.reviewName2": "جون م.",
+"nurseDetails.monthAgo1": "منذ شهر",
+"nurseDetails.review2": "ممرضة ممتازة وذات معرفة كبيرة. اعتنت بوالدتي بشكل رائع وكانت توضح كل شيء بوضوح.",
+
+"nurseDetails.reviewInitials3": "أل",
+"nurseDetails.reviewName3": "آنا ل.",
+"nurseDetails.monthsAgo2": "منذ شهرين",
+"nurseDetails.review3": "محترفة وودودة ومفيدة جدًا. بالتأكيد أوصي بها للرعاية المنزلية.",
+
 },
 };
 

@@ -255,7 +255,7 @@ useEffect(() => {
                   : "cursor-not-allowed bg-gray-300 text-gray-500"
               }`}
             >
-              {t("continue")}
+              {t("common.continue")}
 
               <ArrowRight
                 size={17}
