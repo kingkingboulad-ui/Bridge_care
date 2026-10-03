@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";//useRef bte7tfez bel 2imeh bs bala ma te3mel re-render 
 import {
   Sparkles,
   AlertCircle,
