@@ -8,22 +8,24 @@ const pool = mysql.createPool({
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
-  port: process.env.DB_PORT,
-
+  port: Number(process.env.DB_PORT) || 3306,
+  ssl: {
+    rejectUnauthorized: false, // مطلوب للاتصال السحابي المشفر مع Aiven
+  },
   waitForConnections: true,
   connectionLimit: 10,
   queueLimit: 0,
 });
 
-// Check database connection
-try {
-  const connection = await pool.getConnection();
-
-  console.log("✅ MySQL connected successfully");
-
-  connection.release();
-} catch (error) {
-  console.error("❌ MySQL connection failed:", error.message);
-}
+// فحص الاتصال بقاعدة البيانات
+(async () => {
+  try {
+    const connection = await pool.getConnection();
+    console.log("✅ MySQL connected successfully");
+    connection.release();
+  } catch (error) {
+    console.error("❌ MySQL connection failed:", error.message);
+  }
+})();
 
 export default pool;
