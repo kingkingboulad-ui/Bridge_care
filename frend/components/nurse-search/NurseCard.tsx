@@ -117,6 +117,8 @@ export default function NurseCard({ nurse, onRateClick }: NurseCardProps) {
           src={nurseImage}
           alt={nurseName}
           fill
+          // loading="lazy"
+          priority
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
           className="
             object-cover
@@ -125,6 +127,7 @@ export default function NurseCard({ nurse, onRateClick }: NurseCardProps) {
             transition-transform
             duration-300
           "
+      
         />
       </div>
 

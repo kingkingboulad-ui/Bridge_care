@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import {
   User,
   Baby,
@@ -63,7 +63,8 @@ const careOptions: CareOption[] = [
   },
 ];
 
-export default function BookPage() {
+// 1. المكون الداخلي الذي يحتوي على منطق useSearchParams وواجهة الصفحة
+function BookFormContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -80,37 +81,35 @@ export default function BookPage() {
   }, [data.careForId]);
 
   // Handle nurse ID from URL or previously saved data
+  useEffect(() => {
+    if (!isHydrated) return;
 
-useEffect(() => {
-  if (!isHydrated) return;
+    const nurseIdParam = searchParams.get("nurseId");
 
-  const nurseIdParam = searchParams.get("nurseId");
+    if (nurseIdParam) {
+      const numericId = Number(nurseIdParam);
 
-  if (nurseIdParam) {
-    const numericId = Number(nurseIdParam);
-
-    if (!isNaN(numericId)) {
-      // فحص يمنع التحديث إذا كانت الممرضة هي نفسها المخزنة مسبقاً
-      if (data.preferredNurseId !== numericId) {
-        const nurse = getNurseById(numericId);
-        update({
-          preferredNurseId: numericId,
-          preferredNurseName: nurse ? nurse.name : `Nurse #${numericId}`,
-        });
+      if (!isNaN(numericId)) {
+        if (data.preferredNurseId !== numericId) {
+          const nurse = getNurseById(numericId);
+          update({
+            preferredNurseId: numericId,
+            preferredNurseName: nurse ? nurse.name : `Nurse #${numericId}`,
+          });
+        }
       }
+    } else if (!data.preferredNurseId) {
+      alert(t("selectNurseToContinue"));
+      router.push("/find-a-nurses");
     }
-  } else if (!data.preferredNurseId) {
-    alert(t("selectNurseToContinue"));
-    router.push("/find-a-nurses");
-  }
-}, [
-  searchParams,
-  isHydrated,
-  data.preferredNurseId,
-  router,
-  t,
-  // لا داعي لإضافة update هنا إذا كانت دالة مستقرة، أو غلفها بـ useCallback داخل الـ Context
-]);
+  }, [
+    searchParams,
+    isHydrated,
+    data.preferredNurseId,
+    router,
+    t,
+  ]);
+
   // Continue to Type of Care page
   const handleContinue = () => {
     if (!selected) return;
@@ -134,8 +133,6 @@ useEffect(() => {
       dir={dir}
       className="min-h-screen bg-[#F1F8FB]"
     >
-
-
       <main className="min-h-[650px] px-4 py-6 sm:px-6 sm:py-8">
 
         {/* ================= STEPS ================= */}
@@ -146,7 +143,6 @@ useEffect(() => {
             <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#006D77] text-xs font-semibold text-white">
               1
             </div>
-
             <div className="h-[3px] w-full bg-[#C7DADD]" />
           </div>
 
@@ -155,7 +151,6 @@ useEffect(() => {
             <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#C7DADD] text-xs font-semibold text-[#456268]">
               2
             </div>
-
             <div className="h-[3px] w-full bg-[#C7DADD]" />
           </div>
 
@@ -164,7 +159,6 @@ useEffect(() => {
             <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#C7DADD] text-xs font-semibold text-[#456268]">
               3
             </div>
-
             <div className="h-[3px] w-full bg-[#C7DADD]" />
           </div>
 
@@ -173,7 +167,6 @@ useEffect(() => {
             <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#C7DADD] text-xs font-semibold text-[#456268]">
               4
             </div>
-
             <div className="h-[3px] w-full bg-[#C7DADD]" />
           </div>
 
@@ -203,16 +196,13 @@ useEffect(() => {
             {careOptions.map((option) => {
               const Icon = option.icon;
 
-              const isSelected =
-                selected === option.id;
+              const isSelected = selected === option.id;
 
               return (
                 <button
                   key={option.id}
                   type="button"
-                  onClick={() =>
-                    setSelected(option.id)
-                  }
+                  onClick={() => setSelected(option.id)}
                   className={`flex min-h-[82px] w-full flex-col items-center justify-center rounded-lg border px-2 py-3 text-center transition-all sm:h-[84px] ${
                     isSelected
                       ? "border-[#006D77] bg-[#E8F7F8] shadow-sm"
@@ -272,5 +262,20 @@ useEffect(() => {
         </section>
       </main>
     </div>
+  );
+}
+
+// 2. الصفحة المصدرة مع تغليف Suspense لحماية قراءة الرابط
+export default function BookPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="flex min-h-screen items-center justify-center bg-[#F1F8FB]">
+          <div className="h-8 w-8 animate-spin rounded-full border-4 border-[#006D77] border-t-transparent" />
+        </div>
+      }
+    >
+      <BookFormContent />
+    </Suspense>
   );
 }
