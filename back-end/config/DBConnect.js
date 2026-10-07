@@ -9,15 +9,13 @@ const pool = mysql.createPool({
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
   port: Number(process.env.DB_PORT) || 3306,
-  ssl: {
-    rejectUnauthorized: false, // مطلوب للاتصال السحابي المشفر مع Aiven
-  },
+
   waitForConnections: true,
   connectionLimit: 10,
   queueLimit: 0,
 });
 
-// فحص الاتصال بقاعدة البيانات
+
 (async () => {
   try {
     const connection = await pool.getConnection();
