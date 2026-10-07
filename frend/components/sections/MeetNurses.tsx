@@ -26,19 +26,24 @@ interface Nurse {
 }
 
 export default function MeetNurses() {
-	const { t } = useLanguage();
+  const { t } = useLanguage();
   const [nursesList, setNursesList] = useState<Nurse[]>([]);
   const [loading, setLoading] = useState(true);
+
+  // قراءة الرابط من متغيرات البيئة تلقائياً
+  const API_URL = process.env.NEXT_PUBLIC_API_URL || "";
 
   useEffect(() => {
     const fetchLatestNurses = async () => {
       try {
+
         const res = await axios.get(
           `${process.env.NEXT_PUBLIC_API_URL}/api/nurses/latest`,
           {
             withCredentials: true,
           }
         );
+
         const data = res.data.nurses || res.data || [];
         setNursesList(data.slice(0, 10));
       } catch (error) {
@@ -49,7 +54,7 @@ export default function MeetNurses() {
     };
 
     fetchLatestNurses();
-  }, []);
+  }, [API_URL]);
 
   return (
     <section className="bg-[#F2F8FC] py-20">
@@ -58,13 +63,14 @@ export default function MeetNurses() {
           <div>
             <span className="eyebrow-light">{t("ourTeam")}</span>
             <h2 className="mt-3 text-2xl font-bold text-navy-900 sm:text-3xl">
-            {t("meetOurNurses")}
+              {t("meetOurNurses")}
             </h2>
           </div>
           <Link
             href="/find-a-nurses"
             className="hidden text-sm font-semibold text-teal-700 hover:underline sm:block"
-          >{t("viewAllNurses")}
+          >
+            {t("viewAllNurses")}
           </Link>
         </div>
 
@@ -79,25 +85,23 @@ export default function MeetNurses() {
           </div>
         ) : nursesList.length === 0 ? (
           <div className="mt-10 py-12 text-center text-sm text-navy-900/40">
-        {t("noNursesAvailable")}
+            {t("noNursesAvailable")}
           </div>
         ) : (
           <div className="mt-10 grid gap-6 sm:grid-cols-3">
             {nursesList.map((nurse) => {
-             const imageSource =
-             nurse.photo || nurse.image
-               ? (nurse.photo || nurse.image)!.startsWith("http")
-                 ? (nurse.photo || nurse.image)!
-                 : `${process.env.NEXT_PUBLIC_API_URL}${
-                     (nurse.photo || nurse.image)!.startsWith("/")
-                       ? ""
-                       : "/"
-                   }${nurse.photo || nurse.image}`
-               : `https://ui-avatars.com/api/?name=${encodeURIComponent(
-                   nurse.name || "Nurse"
-                 )}&background=00535B&color=fff&size=300`;
-              const tags = nurse.tags && nurse.tags.length > 0 
-                ? nurse.tags 
+
+             
+              const rawImage = nurse.photo || nurse.image;
+              const imageSource = rawImage
+                ? rawImage.startsWith("http")
+                  ? rawImage
+                  : `${API_URL}${rawImage.startsWith('/') ? '' : '/'}${rawImage}`
+                : `https://ui-avatars.com/api/?name=${encodeURIComponent(nurse.name || 'Nurse')}&background=00535B&color=fff&size=300`;
+
+
+              const tags = nurse.tags && nurse.tags.length > 0
+                ? nurse.tags
                 : [nurse.location || "Lebanon", `${nurse.experience || 1} yrs exp.`];
 
               return (
@@ -114,7 +118,7 @@ export default function MeetNurses() {
                       className="object-cover"
                     />
                     <span className="absolute left-3 top-3 z-10 rounded-full bg-white/95 px-3 py-1 text-xs font-semibold text-teal-700 shadow-sm">
-                 {nurse.available ||  (nurse.price ? `$${nurse.price}/hr` : t("available"))}
+                      {nurse.available || (nurse.price ? `$${nurse.price}/hr` : t("available"))}
                     </span>
                   </div>
                   <div className="p-5">
@@ -122,12 +126,12 @@ export default function MeetNurses() {
                       <div>
                         <h3 className="font-semibold text-navy-900">{nurse.name}</h3>
                         <p className="text-xs text-navy-900/50">
-                     {nurse.credential || t("registeredNurse")}
+                          {nurse.credential || t("registeredNurse")}
                         </p>
                       </div>
                     </div>
                     <p className="mt-2 text-sm font-medium text-teal-700">
-            {nurse.specialty ||nurse.specialization || t("generalHomeCare")}
+                      {nurse.specialty || nurse.specialization || t("generalHomeCare")}
                     </p>
                     <div className="mt-3 flex flex-wrap gap-2">
                       {tags.map((tag, idx) => (
@@ -150,7 +154,7 @@ export default function MeetNurses() {
                         variant="solid"
                         className="px-4 py-2 text-xs"
                       >
-                    {t("bookNow")}
+                        {t("bookNow")}
                       </Button>
                     </div>
                   </div>

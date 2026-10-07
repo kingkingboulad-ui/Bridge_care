@@ -59,7 +59,7 @@ interface NurseProfile {
 
 export default function NurseProfilePage() {
   const { lang, dir, t } = useLanguage();
-
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
   const [profile, setProfile] = useState<NurseProfile | null>(null);
   const [bookings, setBookings] = useState<Booking[]>([]);
 
