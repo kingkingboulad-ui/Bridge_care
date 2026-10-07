@@ -12,7 +12,7 @@ import {
 
 import { protect } from "../middleware/authMiddleware.js";
 
-import upload from "../middleware/uploadMiddleware.js";
+import upload from "../middleware/UploadMiddleware.js";
 const router = express.Router();
 router.post("/admin/login", adminLogin);
 
