@@ -59,7 +59,7 @@ interface NurseProfile {
 
 export default function NurseProfilePage() {
   const { lang, dir, t } = useLanguage();
-
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
   const [profile, setProfile] = useState<NurseProfile | null>(null);
   const [bookings, setBookings] = useState<Booking[]>([]);
 
@@ -94,12 +94,12 @@ export default function NurseProfilePage() {
       setError("");
 
       const [profileResponse, bookingsResponse] = await Promise.all([
-        fetch("http://localhost:5000/api/nurses/me", {
-          credentials: "include",
-        }),
-        fetch("http://localhost:5000/api/nurses/my-bookings", {
-          credentials: "include",
-        }),
+     fetch(`${API_URL}/api/nurses/me`, {
+  credentials: "include",
+}),
+fetch(`${API_URL}/api/nurses/my-bookings`, {
+  credentials: "include",
+}),
       ]);
 
       if (!profileResponse.ok) {
@@ -134,13 +134,13 @@ export default function NurseProfilePage() {
         phone: nurseProfile?.phone || "",
       });
 
-      setImagePreview(
-        nurseProfile?.image
-          ? nurseProfile.image.startsWith("http")
-            ? nurseProfile.image
-            : `http://localhost:5000${nurseProfile.image}`
-          : ""
-      );
+  setImagePreview(
+  nurseProfile?.image
+    ? nurseProfile.image.startsWith("http")
+      ? nurseProfile.image
+      : `${process.env.NEXT_PUBLIC_API_URL}${nurseProfile.image}`
+    : ""
+);
     } catch (err) {
       console.error(err);
       setError(t("nurse.couldNotLoad"));
@@ -221,17 +221,17 @@ export default function NurseProfilePage() {
     try {
       setActionLoading(bookingId);
 
-      const response = await fetch(
-        `http://localhost:5000/api/nurses/bookings/${bookingId}/status`,
-        {
-          method: "PATCH",
-          credentials: "include",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ status }),
-        }
-      );
+  const response = await fetch(
+  `${process.env.NEXT_PUBLIC_API_URL}/api/nurses/bookings/${bookingId}/status`,
+  {
+    method: "PATCH",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ status }),
+  }
+);
 
       if (!response.ok) {
         throw new Error("status");
