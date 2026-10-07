@@ -70,7 +70,7 @@ app.use(cookieParser());
 
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: "https://gleaming-endurance-production-f620.up.railway.app",
     credentials: true,
   })
 );
