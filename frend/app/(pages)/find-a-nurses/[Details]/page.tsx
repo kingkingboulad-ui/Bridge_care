@@ -187,17 +187,15 @@ export default function NurseDetailsPage() {
     t("nurseDetails.registeredNurse");
 
   const rawImage = nurse.image || nurse.photo;
-
   const nurseImage = rawImage
-    ? rawImage.startsWith("http")
-      ? rawImage
-      : `http://localhost:5000${
-          rawImage.startsWith("/") ? "" : "/"
-        }${rawImage}`
-    : `https://ui-avatars.com/api/?name=${encodeURIComponent(
-        nurseName
-      )}&background=00535B&color=fff&size=300`;
-
+  ? rawImage.startsWith("http")
+    ? rawImage
+    : `${process.env.NEXT_PUBLIC_API_URL}${
+        rawImage.startsWith("/") ? "" : "/"
+      }${rawImage}`
+  : `https://ui-avatars.com/api/?name=${encodeURIComponent(
+      nurseName
+    )}&background=00535B&color=fff&size=300`;
   const nursePrice =
     nurse.price !== undefined &&
     nurse.price !== null &&

@@ -69,9 +69,12 @@ export default function PatientsManagementPage() {
     if (!confirm('Are you sure you want to delete this patient?')) return;
 
     try {
-      await axios.delete(`http://localhost:5000/api/patients/${id}`, {
-        withCredentials: true,
-      });
+      await axios.delete(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/patients/${id}`,
+        {
+          withCredentials: true,
+        }
+      );
 
       setPatients((prev) => prev.filter((p) => p.id !== id));
     } catch (err: any) {

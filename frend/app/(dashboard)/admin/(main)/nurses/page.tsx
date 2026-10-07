@@ -584,7 +584,7 @@ export default function NursesManagementPage() {
                       href={
                         selectedNurse.cv_file.startsWith('http')
                           ? selectedNurse.cv_file
-                          : `http://localhost:5000${selectedNurse.cv_file.startsWith('/') ? selectedNurse.cv_file : `/${selectedNurse.cv_file}`}`
+                          : `${process.env.NEXT_PUBLIC_API_URL}${selectedNurse.cv_file.startsWith('/') ? selectedNurse.cv_file : `/${selectedNurse.cv_file}`}`
                       }
                       target="_blank"
                       rel="noopener noreferrer"

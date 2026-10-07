@@ -94,10 +94,10 @@ export default function NurseProfilePage() {
       setError("");
 
       const [profileResponse, bookingsResponse] = await Promise.all([
-        fetch("http://localhost:5000/api/nurses/me", {
+        fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/nurses/me`, {
           credentials: "include",
         }),
-        fetch("http://localhost:5000/api/nurses/my-bookings", {
+        fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/nurses/my-bookings`, {
           credentials: "include",
         }),
       ]);
@@ -138,7 +138,7 @@ export default function NurseProfilePage() {
         nurseProfile?.image
           ? nurseProfile.image.startsWith("http")
             ? nurseProfile.image
-            : `http://localhost:5000${nurseProfile.image}`
+            : `${process.env.NEXT_PUBLIC_API_URL}${nurseProfile.image}`
           : ""
       );
     } catch (err) {
@@ -222,7 +222,7 @@ export default function NurseProfilePage() {
       setActionLoading(bookingId);
 
       const response = await fetch(
-        `http://localhost:5000/api/nurses/bookings/${bookingId}/status`,
+        `${process.env.NEXT_PUBLIC_API_URL}/api/nurses/bookings/${bookingId}/status`,
         {
           method: "PATCH",
           credentials: "include",
@@ -232,7 +232,6 @@ export default function NurseProfilePage() {
           body: JSON.stringify({ status }),
         }
       );
-
       if (!response.ok) {
         throw new Error("status");
       }
@@ -261,9 +260,8 @@ export default function NurseProfilePage() {
 
     try {
       setActionLoading(bookingId);
-
       const response = await fetch(
-        `http://localhost:5000/api/nurses/bookings/${bookingId}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/api/nurses/bookings/${bookingId}`,
         {
           method: "DELETE",
           credentials: "include",
@@ -309,7 +307,7 @@ export default function NurseProfilePage() {
       }
 
       const response = await fetch(
-   `${process.env.NEXT_PUBLIC_API_URL}/api/nurses/me/update`,
+        `${process.env.NEXT_PUBLIC_API_URL}/api/nurses/me/update`,
         {
           method: "PUT",
           credentials: "include",
@@ -388,9 +386,8 @@ export default function NurseProfilePage() {
     profile.cv_file || profile.cvFile
       ? (profile.cv_file || profile.cvFile)!.startsWith("http")
         ? profile.cv_file || profile.cvFile
-        : `http://localhost:5000${
-            profile.cv_file || profile.cvFile
-          }`
+       : `${process.env.NEXT_PUBLIC_API_URL}${profile.cv_file || profile.cvFile
+        }`
       : "";
 
   const profileImage = imagePreview;
@@ -479,12 +476,12 @@ export default function NurseProfilePage() {
 
                 {/* Specialization badge */}
                 {/* Specialization badge */}
-<div className="mt-8">
-  <p className="inline-block px-5 py-2 rounded-full bg-[#00535B]/10 text-[#00535B] text-sm font-semibold">
-    {profile.specialization ||
-      t("nurse.registeredNurse")}
-  </p>
-</div>
+                <div className="mt-8">
+                  <p className="inline-block px-5 py-2 rounded-full bg-[#00535B]/10 text-[#00535B] text-sm font-semibold">
+                    {profile.specialization ||
+                      t("nurse.registeredNurse")}
+                  </p>
+                </div>
                 <div className="flex flex-wrap gap-4 mt-4 text-sm text-gray-600">
                   {profile.location && (
                     <div className="flex items-center gap-1.5">

@@ -47,7 +47,7 @@ function RateNurseModal({
 
     try {
       const res = await axios.post(
-        `http://localhost:5000/api/nurses/${nurseId}/rate`,
+        `${process.env.NEXT_PUBLIC_API_URL}/api/nurses/${nurseId}/rate`,
         {
           rating: selectedRating,
           comment,

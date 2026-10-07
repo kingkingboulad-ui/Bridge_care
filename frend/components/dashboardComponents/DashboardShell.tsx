@@ -80,9 +80,12 @@ export default function DashboardShell({ children }: ShellProps) {
 
     const fetchAdminFromCookieAuth = async () => {
       try {
-        const res = await axios.get('http://localhost:5000/api/auth/me', {
-          withCredentials: true,
-        });
+        const res = await axios.get(
+          `${process.env.NEXT_PUBLIC_API_URL}/api/auth/me`,
+          {
+            withCredentials: true,
+          }
+        );
 
         if (res.data?.user) {
           setAdminUser(res.data.user);
@@ -100,9 +103,12 @@ export default function DashboardShell({ children }: ShellProps) {
   // 2. جلب الإشعارات المخزنة في الـ Database
   const fetchNotifications = async () => {
     try {
-      const res = await axios.get('http://localhost:5000/api/notifications/admin', {
-        withCredentials: true,
-      });
+      const res = await axios.get(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/notifications/admin`,
+        {
+          withCredentials: true,
+        }
+      );
 
       if (res.data?.success && Array.isArray(res.data.notifications)) {
         const list: NotificationItem[] = res.data.notifications;
@@ -119,10 +125,13 @@ export default function DashboardShell({ children }: ShellProps) {
   useEffect(() => {
     fetchNotifications();
 
-    const socket: Socket = io('http://localhost:5000', {
-      withCredentials: true,
-      transports: ['websocket', 'polling'],
-    });
+    const socket: Socket = io(
+      process.env.NEXT_PUBLIC_API_URL!,
+      {
+        withCredentials: true,
+        transports: ["websocket", "polling"],
+      }
+    );
 
     socket.on('connect', () => {
       socket.emit('join', {
@@ -161,7 +170,7 @@ export default function DashboardShell({ children }: ShellProps) {
   const handleMarkAllAsRead = async () => {
     try {
       await axios.patch(
-        'http://localhost:5000/api/notifications/admin/read',
+        `${process.env.NEXT_PUBLIC_API_URL}/api/notifications/admin/read`,
         {},
         { withCredentials: true }
       );
@@ -184,8 +193,9 @@ export default function DashboardShell({ children }: ShellProps) {
   const handleLogout = async () => {
     try {
       setLoggingOut(true);
+    
       await axios.post(
-        'http://localhost:5000/api/auth/logout',
+        `${process.env.NEXT_PUBLIC_API_URL}/api/auth/logout`,
         {},
         { withCredentials: true }
       );
@@ -207,11 +217,15 @@ export default function DashboardShell({ children }: ShellProps) {
   const adminName = adminUser?.first_name
     ? `${adminUser.first_name} ${adminUser.last_name || ''}`.trim()
     : 'Admin';
-
-  const avatarUrl = adminUser?.image
-    ? (adminUser.image.startsWith('http') ? adminUser.image : `http://localhost:5000/${adminUser.image.replace(/^\/+/, '')}`)
-    : `https://ui-avatars.com/api/?name=${encodeURIComponent(adminName)}&background=0d6e6e&color=fff&size=128`;
-
+    const avatarUrl = adminUser?.image
+    ? (
+        adminUser.image.startsWith("http")
+          ? adminUser.image
+          : `${process.env.NEXT_PUBLIC_API_URL}/${adminUser.image.replace(/^\/+/, "")}`
+      )
+    : `https://ui-avatars.com/api/?name=${encodeURIComponent(
+        adminName
+      )}&background=0d6e6e&color=fff&size=128`;
   return (
     <div className="min-h-screen bg-[#f8fafc] text-slate-800 flex flex-col font-sans">
       {/* 1. FIXED HEADER */}

@@ -33,9 +33,12 @@ export default function MeetNurses() {
   useEffect(() => {
     const fetchLatestNurses = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/nurses/latest", {
-          withCredentials: true,
-        });
+        const res = await axios.get(
+          `${process.env.NEXT_PUBLIC_API_URL}/api/nurses/latest`,
+          {
+            withCredentials: true,
+          }
+        );
         const data = res.data.nurses || res.data || [];
         setNursesList(data.slice(0, 10));
       } catch (error) {
@@ -81,12 +84,18 @@ export default function MeetNurses() {
         ) : (
           <div className="mt-10 grid gap-6 sm:grid-cols-3">
             {nursesList.map((nurse) => {
-              const imageSource = nurse.photo || nurse.image
-                ? (nurse.photo || nurse.image)!.startsWith("http")
-                  ? (nurse.photo || nurse.image)!
-                  : `http://localhost:5000${(nurse.photo || nurse.image)!.startsWith('/') ? '' : '/'}${nurse.photo || nurse.image}`
-                : `https://ui-avatars.com/api/?name=${encodeURIComponent(nurse.name || 'Nurse')}&background=00535B&color=fff&size=300`;
-
+             const imageSource =
+             nurse.photo || nurse.image
+               ? (nurse.photo || nurse.image)!.startsWith("http")
+                 ? (nurse.photo || nurse.image)!
+                 : `${process.env.NEXT_PUBLIC_API_URL}${
+                     (nurse.photo || nurse.image)!.startsWith("/")
+                       ? ""
+                       : "/"
+                   }${nurse.photo || nurse.image}`
+               : `https://ui-avatars.com/api/?name=${encodeURIComponent(
+                   nurse.name || "Nurse"
+                 )}&background=00535B&color=fff&size=300`;
               const tags = nurse.tags && nurse.tags.length > 0 
                 ? nurse.tags 
                 : [nurse.location || "Lebanon", `${nurse.experience || 1} yrs exp.`];

@@ -28,7 +28,7 @@ const server = http.createServer(app);
 
 export const io = new Server(server, {
   cors: {
-    origin: "http://localhost:3000", 
+    origin: "https://gleaming-endurance-production-f620.up.railway.app", 
     methods: ["GET", "POST", "PATCH", "DELETE", "PUT"],
     credentials: true,
   },
@@ -70,7 +70,7 @@ app.use(cookieParser());
 
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: "https://gleaming-endurance-production-f620.up.railway.app",
     credentials: true,
   })
 );

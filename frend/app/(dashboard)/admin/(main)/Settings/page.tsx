@@ -33,12 +33,15 @@ async function getAdminData(): Promise<AdminProfile> {
 
   if (token) {
     try {
-      const res = await fetch("http://localhost:5000/api/admin/profile", {
-        headers: {
-          Cookie: `token=${token}`,
-        },
-        cache: "no-store",
-      });
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/admin/profile`,
+        {
+          headers: {
+            Cookie: `token=${token}`,
+          },
+          cache: "no-store",
+        }
+      );
 
       if (res.ok) {
         const data = await res.json();
@@ -91,9 +94,12 @@ async function getAboutSettings(): Promise<AboutSettings> {
   };
 
   try {
-    const res = await fetch("http://localhost:5000/api/settings/about_content", {
-      cache: "no-store",
-    });
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/api/settings/about_content`,
+      {
+        cache: "no-store",
+      }
+    );
     if (res.ok) {
       const json = await res.json();
       return { ...defaults, ...(json.data || {}) };

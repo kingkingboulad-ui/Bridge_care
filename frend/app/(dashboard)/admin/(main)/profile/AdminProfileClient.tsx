@@ -103,10 +103,10 @@ export default function AdminProfileClient({ initialProfile }: Props) {
 
   const fullName = `${profile.firstName} ${profile.lastName}`.trim() || "Admin User";
   const displayAvatar = profile.avatarUrl
-    ? profile.avatarUrl.startsWith("http")
-      ? profile.avatarUrl
-      : `http://localhost:5000/${profile.avatarUrl.replace(/^\/+/, "")}`
-    : `https://ui-avatars.com/api/?name=${encodeURIComponent(fullName)}&background=0d6e6e&color=fff&size=128`;
+  ? profile.avatarUrl.startsWith("http")
+    ? profile.avatarUrl
+    : `${process.env.NEXT_PUBLIC_API_URL}/${profile.avatarUrl.replace(/^\/+/, "")}`
+  : `https://ui-avatars.com/api/?name=${encodeURIComponent(fullName)}&background=0d6e6e&color=fff&size=128`;
 
   return (
     <div className="space-y-6">

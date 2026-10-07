@@ -123,10 +123,9 @@ export default function ResultsPlaceholder({
     if (!path || path.trim() === "") {
       return null;
     }
-
     return path.startsWith("http")
-      ? path
-      : `http://localhost:5000/${path.replace(/^\/+/, "")}`;
+    ? path
+    : `${process.env.NEXT_PUBLIC_API_URL}/${path.replace(/^\/+/, "")}`;
   };
 
   const primaryCvUrl = getCleanCvUrl(result.nurse.cv_file);

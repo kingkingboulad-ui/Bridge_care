@@ -35,7 +35,7 @@ export default function RateNurseModal({
     try {
       const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
       const res = await axios.post(
-        `http://localhost:5000/api/nurses/${nurseId}/rate`,
+        `${process.env.NEXT_PUBLIC_API_URL}/api/nurses/${nurseId}/rate`,
         { rating: selectedRating, comment },
         {
           withCredentials: true,

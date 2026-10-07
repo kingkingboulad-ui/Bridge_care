@@ -66,7 +66,7 @@ export default function NurseCard({ nurse, onRateClick }: NurseCardProps) {
     if (img.startsWith("http")) {
       nurseImage = img;
     } else if (img.startsWith("/uploads/")) {
-      nurseImage = `http://localhost:5000${img}`;
+      nurseImage = `${process.env.NEXT_PUBLIC_API_URL}${img}`;
     } else {
       nurseImage = img.startsWith("/") ? img : `/${img}`;
     }

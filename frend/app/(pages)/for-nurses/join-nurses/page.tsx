@@ -96,12 +96,12 @@ export default function NurseOnboardingFlow() {
       data.append('price', formData.price);
 
       const res = await axios.post(
-        'http://localhost:5000/api/nurses/apply',
+        `${process.env.NEXT_PUBLIC_API_URL}/api/nurses/apply`,
         data,
         {
           withCredentials: true,
           headers: {
-            'Content-Type': 'multipart/form-data',
+            "Content-Type": "multipart/form-data",
           },
         }
       );

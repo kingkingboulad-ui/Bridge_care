@@ -55,7 +55,7 @@ export default function AddCategoryPage() {
   const fetchCategories = async () => {
     try {
       setLoadingList(true);
-      const res = await axios.get('http://localhost:5000/api/categories', {
+      const res = await axios.get( `${process.env.NEXT_PUBLIC_API_URL}/api/categories`, {
         withCredentials: true,
       });
       const data = res.data?.categories || res.data || [];
@@ -80,7 +80,7 @@ export default function AddCategoryPage() {
 
     try {
       const res = await axios.post(
-        'http://localhost:5000/api/categories',
+        `${process.env.NEXT_PUBLIC_API_URL}/api/categories`,
         { name, slug, description },
         { withCredentials: true }
       );
@@ -105,9 +105,13 @@ export default function AddCategoryPage() {
 
     try {
       setDeletingId(id);
-      await axios.delete(`http://localhost:5000/api/categories/${id}`, {
-        withCredentials: true,
-      });
+    
+      await axios.delete(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/categories/${id}`,
+        {
+          withCredentials: true,
+        }
+      );
       setCategories((prev) => prev.filter((item) => item.id !== id));
     } catch (err: any) {
       alert(err.response?.data?.message || 'Failed to delete category');
