@@ -508,11 +508,12 @@ export const register = async (req, res) => {
 
 export const logout = async (req, res) => {
   try {
-    res.clearCookie("token", {
+    res.cookie("token", "", {
       httpOnly: true,
       secure: true,
       sameSite: "none",
       path: "/",
+      expires: new Date(0),
     });
 
     return res.status(200).json({
@@ -528,7 +529,6 @@ export const logout = async (req, res) => {
     });
   }
 };
-
 
 
 
@@ -701,11 +701,11 @@ export const adminLogin = async (req, res) => {
       { expiresIn: "1d" }
     );
 
-    // 5. حفظ التوكن في الكوكي
     res.cookie("token", token, {
       httpOnly: true,
       secure: true,
       sameSite: "none",
+      path: "/",
       maxAge: 24 * 60 * 60 * 1000,
     });
 
