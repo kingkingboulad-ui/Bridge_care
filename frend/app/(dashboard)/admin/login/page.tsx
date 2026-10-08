@@ -19,7 +19,7 @@ export default function AdminLoginPage() {
 
     try {
       const res = await axios.post(
-      "/api/auth/admin/login",
+     ` ${process.env.NEXT_PUBLIC_API_URL}/api/admin/login`,
         { email, password },
         { withCredentials: true } // يستقبل ويحفظ الكوكيز القادمة من الباك إند تلقائياً
       );
