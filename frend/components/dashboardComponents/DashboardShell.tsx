@@ -190,17 +190,23 @@ export default function DashboardShell({ children }: ShellProps) {
     }
   };
 
-  const handleLogout = async () => {
+  const handleLogout = async (e: React.MouseEvent) => {
+    e.preventDefault(); // لمنع أي سلوك افتراضي للمتصفح
+    console.log("🚀 جاري تسجيل الخروج... سيتم إرسال الطلب الآن"); // رسالة للتأكد من عمل الزر
+
     try {
       setLoggingOut(true);
     
-      await axios.post(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/auth/logout`,
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/auth/logout`, // تأكد أن هذا هو المسار الصحيح
         {},
         { withCredentials: true }
       );
+      
+      console.log("✅ استجابة السيرفر:", response.data);
+
     } catch (error) {
-      console.error('Logout error:', error);
+      console.error('❌ خطأ أثناء تسجيل الخروج:', error);
     } finally {
       if (typeof document !== 'undefined') {
         document.cookie = 'token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
@@ -210,7 +216,11 @@ export default function DashboardShell({ children }: ShellProps) {
 
       setLoggingOut(false);
       setIsSidebarOpen(false);
-      window.location.href = '/admin/login';
+      
+      // تأخير بسيط قبل إعادة التوجيه لتتمكن من رؤية الـ Console
+      setTimeout(() => {
+         window.location.href = '/admin/login';
+      }, 500); 
     }
   };
 
