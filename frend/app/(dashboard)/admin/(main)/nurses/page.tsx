@@ -150,7 +150,7 @@ export default function NursesManagementPage() {
     try {
       setDeletingId(nurseId);
 
-      await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/api/nurses/${nurseId}`, {
+      await axios.delete(`/api/admin/nurses/${nurseId}`, {
         withCredentials: true,
       });
 
