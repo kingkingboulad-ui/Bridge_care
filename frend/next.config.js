@@ -15,10 +15,9 @@ const nextConfig = {
         hostname: "ui-avatars.com",
       },
       {
-        protocol: "http",
-        hostname: "localhost",
-        port: "5000",
-        pathname: "/**", // يسمح بـ /uploads/ و /images/ وأي مسار آخر
+        protocol: "https",
+        hostname: "bridgecare-production.up.railway.app", 
+        pathname: "/**",
       },
     ],
   },
