@@ -508,13 +508,11 @@ export const register = async (req, res) => {
 
 export const logout = async (req, res) => {
   try {
-    res.cookie("token", "", {
+    res.clearCookie("token", {
       httpOnly: true,
       secure: true,
       sameSite: "none",
       path: "/",
-      domain: "bridgecare-production.up.railway.app",
-      expires: new Date(0),
     });
 
     return res.status(200).json({
@@ -707,7 +705,7 @@ export const adminLogin = async (req, res) => {
       secure: true,
       sameSite: "none",
       path: "/",
-      domain: "bridgecare-production.up.railway.app",
+   
       maxAge: 24 * 60 * 60 * 1000,
     });
 
