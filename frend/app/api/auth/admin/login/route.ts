@@ -5,9 +5,11 @@ export async function POST(request: Request) {
   try {
     const body = await request.json();
 
+    const backendUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
+
     // 1. إرسال الطلب إلى خادم Express
     const backendResponse = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/auth/admin/login`,
+      `${backendUrl}/api/auth/admin/login`,
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -25,8 +27,8 @@ export async function POST(request: Request) {
       );
     }
 
-    // 2. زرع الكوكي رسمياً في نطاق Next.js
-    const cookieStore = await cookies();
+    // 2. زرع الكوكي رسمياً في نطاق Next.js (بدون await)
+    const cookieStore = cookies();
     cookieStore.set("token", data.token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
@@ -47,5 +49,3 @@ export async function POST(request: Request) {
     );
   }
 }
-
-
