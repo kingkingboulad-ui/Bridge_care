@@ -191,39 +191,18 @@ export default function DashboardShell({ children }: ShellProps) {
   };
 
   const handleLogout = async (e: React.MouseEvent) => {
-    e.preventDefault(); // لمنع أي سلوك افتراضي للمتصفح
-    console.log("🚀 جاري تسجيل الخروج... سيتم إرسال الطلب الآن"); // رسالة للتأكد من عمل الزر
-
+    e.preventDefault();
     try {
       setLoggingOut(true);
-    
-      const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/auth/logout`, // تأكد أن هذا هو المسار الصحيح
-        {},
-        { withCredentials: true }
-      );
-      
-      console.log("✅ استجابة السيرفر:", response.data);
-
+      await axios.post('/api/auth/admin/logout'); // 👈 توجيه داخلي
     } catch (error) {
-      console.error('❌ خطأ أثناء تسجيل الخروج:', error);
+      console.error('Logout error:', error);
     } finally {
-      if (typeof document !== 'undefined') {
-        document.cookie = 'token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-        document.cookie = 'user=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-        document.cookie = 'admin_user=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-      }
-
       setLoggingOut(false);
       setIsSidebarOpen(false);
-      
-      // تأخير بسيط قبل إعادة التوجيه لتتمكن من رؤية الـ Console
-      setTimeout(() => {
-         window.location.href = '/admin/login';
-      }, 1000); 
+      window.location.href = '/admin/login';
     }
   };
-
   const adminName = adminUser?.first_name
     ? `${adminUser.first_name} ${adminUser.last_name || ''}`.trim()
     : 'Admin';
