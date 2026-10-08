@@ -72,7 +72,7 @@ router.patch("/bookings/:id/status", protect, updateBookingStatus);
 
 
 
-router.delete('/:id', protect, deleteNurse);
+router.delete('/:id', protect,adminOnly, deleteNurse);
 
 
 
