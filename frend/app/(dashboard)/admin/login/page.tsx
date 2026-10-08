@@ -11,37 +11,30 @@ export default function AdminLoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMessage("");
     setLoading(true);
 
     try {
-      const res = await axios.post(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/auth/admin/login`, // 👈 المسار الكامل الصحيح
-        {
-          email,
-          password
-        },
-        {
-          withCredentials: true // 👈 إجباري لكي يحفظ المتصفح الكوكي
-        }
-      );
+      // 👈 نطلب مسار Next.js الداخلي وليس Express
+      const res = await axios.post('/api/auth/admin/login', {
+        email,
+        password
+      });
 
       if (res.data.success) {
-        // التوجيه مع إعادة تحميل الصفحة لضمان قراءة الكوكيز الجديدة مباشرة في كل المكونات والـ Middleware
+        // سيمر الـ Middleware بنجاح لأن الكوكي تم إنشاؤه عبر مسار Next الآمن
         window.location.href = "/admin";
       }
     } catch (err: any) {
       setErrorMessage(
-        err.response?.data?.message || "Authentication failed. Access restricted to administrators."
+        err.response?.data?.message || "Authentication failed."
       );
     } finally {
       setLoading(false);
     }
   };
-
   return (
     <div className="min-h-screen bg-slate-950 flex flex-col justify-center py-12 sm:px-6 lg:px-8 relative overflow-hidden">
       {/* Background Accent Gradients */}
