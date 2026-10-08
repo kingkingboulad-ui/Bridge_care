@@ -21,6 +21,7 @@ import notificationRoutes from "./router/notificationRoutes.js";
 dotenv.config();
 
 const app = express();
+app.set("trust proxy", 1);
 const PORT = process.env.PORT ;
 
 const server = http.createServer(app);
