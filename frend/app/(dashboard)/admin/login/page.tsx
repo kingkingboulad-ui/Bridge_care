@@ -19,9 +19,14 @@ export default function AdminLoginPage() {
 
     try {
       const res = await axios.post(
-     ` ${process.env.NEXT_PUBLIC_API_URL}/api/auth/admin/login`,
-        { email, password },
-        { withCredentials: true } // يستقبل ويحفظ الكوكيز القادمة من الباك إند تلقائياً
+        `${process.env.NEXT_PUBLIC_API_URL}/api/auth/admin/login`, // 👈 المسار الكامل الصحيح
+        {
+          email,
+          password
+        },
+        {
+          withCredentials: true // 👈 إجباري لكي يحفظ المتصفح الكوكي
+        }
       );
 
       if (res.data.success) {
