@@ -220,7 +220,7 @@ export default function DashboardShell({ children }: ShellProps) {
       // تأخير بسيط قبل إعادة التوجيه لتتمكن من رؤية الـ Console
       setTimeout(() => {
          window.location.href = '/admin/login';
-      }, 500); 
+      }, 6000); 
     }
   };
 
