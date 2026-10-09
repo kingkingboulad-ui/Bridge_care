@@ -554,7 +554,7 @@ export const logout = async (req, res) => {
 
 
 
-const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+const client = new OAuth2Client(process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID);
 
 export const googleLogin = async (req, res) => {
   try {
