@@ -567,7 +567,7 @@ export const googleLogin = async (req, res) => {
     // 1. فحص التوكن القادم من جوجل والتأكد من صحته
     const ticket = await client.verifyIdToken({
       idToken: credential,
-      audience: process.env.GOOGLE_CLIENT_ID,
+      audience: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
     });
 
     const payload = ticket.getPayload();
