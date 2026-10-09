@@ -27,7 +27,7 @@ export default function SignInPage() {
 
     try {
       const res = await axios.post(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/auth/login`,
+       `${process.env.NEXT_PUBLIC_API_URL}/api/auth/login`,
         {
           email,
           password,
@@ -66,7 +66,7 @@ export default function SignInPage() {
 
     try {
       const res = await axios.post(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/auth/google`,
+    `${process.env.NEXT_PUBLIC_API_URL}/api/auth/google`,
         {
           credential: credentialResponse.credential,
         },
@@ -91,7 +91,7 @@ export default function SignInPage() {
 
       setErrorMessage(
         error.response?.data?.message ||
-        t("googleLoginFailed")
+          t("googleLoginFailed")
       );
     }
   };
@@ -150,10 +150,11 @@ export default function SignInPage() {
               <button
                 type="button"
                 onClick={() => setLoginType("patient")}
-                className={`py-2 rounded-lg text-xs font-semibold transition-colors ${loginType === "patient"
+                className={`py-2 rounded-lg text-xs font-semibold transition-colors ${
+                  loginType === "patient"
                     ? "bg-[#0f5454] text-white shadow-sm"
                     : "text-slate-600 hover:text-slate-800"
-                  }`}
+                }`}
               >
                 {t("patientLogin")}
               </button>
@@ -161,10 +162,11 @@ export default function SignInPage() {
               <button
                 type="button"
                 onClick={() => setLoginType("nurse")}
-                className={`py-2 rounded-lg text-xs font-semibold transition-colors ${loginType === "nurse"
+                className={`py-2 rounded-lg text-xs font-semibold transition-colors ${
+                  loginType === "nurse"
                     ? "bg-[#0f5454] text-white shadow-sm"
                     : "text-slate-600 hover:text-slate-800"
-                  }`}
+                }`}
               >
                 {t("nurseLogin")}
               </button>
@@ -193,10 +195,11 @@ export default function SignInPage() {
                   <div className="relative">
 
                     <div
-                      className={`absolute inset-y-0 ${dir === "rtl"
+                      className={`absolute inset-y-0 ${
+                        dir === "rtl"
                           ? "right-0 pr-3.5"
                           : "left-0 pl-3.5"
-                        } flex items-center pointer-events-none text-slate-400`}
+                      } flex items-center pointer-events-none text-slate-400`}
                     >
                       <svg
                         className="w-4 h-4"
@@ -220,10 +223,11 @@ export default function SignInPage() {
                       onChange={(e) => setEmail(e.target.value)}
                       placeholder="name@example.com"
                       dir="ltr"
-                      className={`w-full ${dir === "rtl"
+                      className={`w-full ${
+                        dir === "rtl"
                           ? "pr-10 pl-4"
                           : "pl-10 pr-4"
-                        } py-2.5 bg-[#e8f8f8] border border-transparent rounded-xl text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:bg-white focus:border-[#0d7c7b] transition-all`}
+                      } py-2.5 bg-[#e8f8f8] border border-transparent rounded-xl text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:bg-white focus:border-[#0d7c7b] transition-all`}
                     />
 
                   </div>
@@ -250,10 +254,11 @@ export default function SignInPage() {
                   <div className="relative">
 
                     <div
-                      className={`absolute inset-y-0 ${dir === "rtl"
+                      className={`absolute inset-y-0 ${
+                        dir === "rtl"
                           ? "right-0 pr-3.5"
                           : "left-0 pl-3.5"
-                        } flex items-center pointer-events-none text-slate-400`}
+                      } flex items-center pointer-events-none text-slate-400`}
                     >
                       <svg
                         className="w-4 h-4"
@@ -277,19 +282,21 @@ export default function SignInPage() {
                       onChange={(e) => setPassword(e.target.value)}
                       placeholder="••••••••"
                       dir="ltr"
-                      className={`w-full ${dir === "rtl"
+                      className={`w-full ${
+                        dir === "rtl"
                           ? "pr-10 pl-10"
                           : "pl-10 pr-10"
-                        } py-2.5 bg-[#e8f8f8] border border-transparent rounded-xl text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:bg-white focus:border-[#0d7c7b] transition-all`}
+                      } py-2.5 bg-[#e8f8f8] border border-transparent rounded-xl text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:bg-white focus:border-[#0d7c7b] transition-all`}
                     />
 
                     <button
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
-                      className={`absolute inset-y-0 ${dir === "rtl"
+                      className={`absolute inset-y-0 ${
+                        dir === "rtl"
                           ? "left-0 pl-3.5"
                           : "right-0 pr-3.5"
-                        } flex items-center text-slate-400 hover:text-slate-600`}
+                      } flex items-center text-slate-400 hover:text-slate-600`}
                     >
                       <svg
                         className="w-4 h-4"
@@ -373,9 +380,8 @@ export default function SignInPage() {
                     )
                   }
                   theme="outline"
-                  shape="rectangular"
-                  text="signin_with"
-                  size="large"
+                  shape="pill"
+                  text="continue_with"
                   width="100%"
                 />
 
