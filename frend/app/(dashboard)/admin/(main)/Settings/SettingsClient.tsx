@@ -147,9 +147,8 @@ export default function SettingsClient({
 
     try {
       await axios.put(
-   `${process.env.NEXT_PUBLIC_API_URL}/api/settings/contact_info`,
-        contactData,
-        { withCredentials: true }
+        "/api/proxy/settings/contact_info",
+        contactData
       );
 
       setSuccessMessage("Contact details updated successfully!");
@@ -180,12 +179,11 @@ export default function SettingsClient({
 
     try {
       await axios.put(
-     `${process.env.NEXT_PUBLIC_API_URL}/api/admin/change-password`,
+        "/api/proxy/admin/change-password",
         {
           currentPassword: passwords.currentPassword,
           newPassword: passwords.newPassword,
-        },
-        { withCredentials: true }
+        }
       );
 
       setSuccessMessage("Password changed successfully!");
@@ -211,17 +209,15 @@ export default function SettingsClient({
 
     try {
       await axios.post(
-   `${process.env.NEXT_PUBLIC_API_URL}/api/admin/create`,
+        "/api/proxy/admin/create",
         {
           first_name: newAdmin.firstName,
           last_name: newAdmin.lastName,
           email: newAdmin.email,
           password: newAdmin.password,
           role: "admin",
-        },
-        { withCredentials: true }
+        }
       );
-
       setSuccessMessage("New administrator created successfully!");
       setNewAdmin({ firstName: "", lastName: "", email: "", password: "" });
     } catch (err: any) {

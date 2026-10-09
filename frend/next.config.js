@@ -16,10 +16,18 @@ const nextConfig = {
       },
       {
         protocol: "https",
-        hostname: "bridgecare-production.up.railway.app", 
+        hostname: "bridgecare-production.up.railway.app",
         pathname: "/**",
       },
     ],
+  },
+  async rewrites() {
+    return [
+      {
+        source: "/api/proxy/:path*",
+        destination: "https://bridgecare-production.up.railway.app/api/:path*",
+      },
+    ];
   },
 };
 
